@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 
 import javax.annotation.PostConstruct;
 
-public class SimpleController {
+public class SimpleView {
 
     @FXML
     Pane root;

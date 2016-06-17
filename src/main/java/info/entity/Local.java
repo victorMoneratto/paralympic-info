@@ -1,4 +1,4 @@
-package info.entities;
+package info.entity;
 
 import io.datafx.crud.table.ViewColumn;
 
@@ -6,11 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "Localidade")
-public class Local implements Serializable {
+public class Local extends AbstractEntity{
 
     @Id
     @Column
@@ -21,7 +20,8 @@ public class Local implements Serializable {
     @ViewColumn("Endereço")
     private String Endereco;
 
-    public Local() {}
+    public Local() {
+    }
 
     public Local(String nome, String endereco) {
         Nome = nome;
@@ -42,5 +42,10 @@ public class Local implements Serializable {
 
     public void setEndereco(String endereco) {
         Endereco = endereco;
+    }
+
+    @Override
+    public String getFormattedPrimaryKey() {
+        return Nome;
     }
 }

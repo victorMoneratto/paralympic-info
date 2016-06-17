@@ -30,7 +30,7 @@
                <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/info/view/icons/athlete.png" />
+                        <Image url="/icons/athlete.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -42,7 +42,7 @@
                <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/info/view/icons/team.png" />
+                        <Image url="/icons/team.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -54,7 +54,7 @@
                  <graphic>
                      <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                          <image>
-                             <Image url="/info/view/icons/match.png" />
+                             <Image url="/icons/match.png" />
                          </image>
                      </ImageView>
                  </graphic>
@@ -66,31 +66,31 @@
                <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/info/view/icons/medal.png" />
+                        <Image url="/icons/medal.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="localButton" contentDisplay="TOP" layoutX="143.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Locais" textAlignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="local" contentDisplay="TOP" layoutX="143.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Locais" textAlignment="CENTER" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/info/view/icons/location.png" />
+                        <Image url="/icons/location.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="TOP" layoutX="10.0" layoutY="308.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Sair" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="exit" contentDisplay="TOP" layoutX="10.0" layoutY="308.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Sair" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="/info/view/icons/exit.png" />
+                        <Image url="/icons/exit.png" />
                      </image>
                   </ImageView>
                </graphic>

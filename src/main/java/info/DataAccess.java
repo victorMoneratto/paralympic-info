@@ -10,7 +10,8 @@ import java.util.List;
 public class DataAccess {
 
     public <T> List<T> selectAll(Class<T> clazz) {
-        return selectAll(clazz.getAnnotation(Table.class).name(), clazz);
+        String entityName = tableNameFor(clazz);
+        return selectAll(entityName, clazz);
     }
 
     public <T> List<T> selectAll(String table, Class<T> clazz)  {
@@ -23,6 +24,10 @@ public class DataAccess {
         return list;
     }
 
+    public <T> String tableNameFor(Class<T> clazz) {
+        Table annotation = clazz.getAnnotation(Table.class);
+        return annotation != null? annotation.name() : clazz.getSimpleName();
+    }
 
     public static final String PARA_INFO_PERSISTENCE_UNIT_NAME = "para-info";
 
@@ -40,8 +45,13 @@ public class DataAccess {
 
     private EntityManager entityManager;
 
-    public javax.persistence.EntityManager getEntityManager() {
-        return entityManager;
+    public Query createNativeQuery(String sql, Class clazz) {
+        return entityManager.createNativeQuery(sql, clazz);
     }
+
+//    // Commented out so we're sort of forced to use native queries with the method above
+//    public EntityManager getEntityManager() {
+//        return entityManager;
+//    }
 
 }
