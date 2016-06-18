@@ -5,25 +5,25 @@ import io.datafx.crud.table.ViewColumn;
 import javax.persistence.*;
 
 @Entity
-public class Arbitro extends AbstractEntity {
+public class Arbitro {
     @Id
     @Column
     @ViewColumn("ID")
-    private String identificador;
+    public Integer identificador;
 
     @Column
     @ViewColumn("Nome")
-    private String nome;
+    public String nome;
 
     @Column
     @ViewColumn("País")
-    private String pais;
+    public String pais;
 
-    public String getIdentificador() {
+    public Integer getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
     }
 
@@ -41,10 +41,5 @@ public class Arbitro extends AbstractEntity {
 
     public void setPais(String pais) {
         this.pais = pais;
-    }
-
-    @Override
-    public String getFormattedPrimaryKey() {
-        return identificador;
     }
 }

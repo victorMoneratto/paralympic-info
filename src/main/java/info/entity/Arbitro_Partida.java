@@ -12,25 +12,25 @@ import javax.persistence.IdClass;
 public class Arbitro_Partida {
     @Id
     @ViewColumn("Partida")
-    private String partida;
+    public Integer partida;
 
     @Id
     @ViewColumn("Arbitro")
-    private String arbitro;
+    public Integer arbitro;
 
-    public String getPartida() {
+    public Integer getPartida() {
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getArbitro() {
+    public Integer getArbitro() {
         return arbitro;
     }
 
-    public void setArbitro(String arbitro) {
+    public void setArbitro(Integer arbitro) {
         this.arbitro = arbitro;
     }
 }

@@ -13,39 +13,39 @@ public class Atleta_Partida {
 
     @Id
     @ViewColumn("Partida")
-    private String partida;
+    public Integer partida;
 
     @Id
     @ViewColumn("Atleta")
-    private String atleta;
+    public Integer atleta;
 
     @ViewColumn("Classificação")
-    private String classificacao;
+    public Integer classificacao;
 
     @ViewColumn("Pontuação")
-    private Double pontuacao;
+    public Double pontuacao;
 
-    public String getPartida() {
+    public Integer getPartida() {
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 
-    public String getClassificacao() {
+    public Integer getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(String classificacao) {
+    public void setClassificacao(Integer classificacao) {
         this.classificacao = classificacao;
     }
 
@@ -56,4 +56,5 @@ public class Atleta_Partida {
     public void setPontuacao(Double pontuacao) {
         this.pontuacao = pontuacao;
     }
+
 }

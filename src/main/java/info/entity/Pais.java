@@ -5,29 +5,24 @@ import io.datafx.crud.table.ViewColumn;
 import javax.persistence.*;
 
 @Entity
-public class Pais extends AbstractEntity {
+public class Pais {
 
     @Id
     @Column
     @ViewColumn("Nome")
-    private String nome;
+    public String nome;
 
     @Column
     @ViewColumn("Abreviação")
-    private String abreviacao;
+    public String abreviacao;
 
     @Column
     @ViewColumn("Bandeira")
-    private String bandeira;
-
-//    @JoinColumn(name = "Delegacao")
-//    @ViewColumn("Delegação")
-//    @ManyToOne
-//    private Delegacao delegacao;
+    public String bandeira;
 
     @Column
     @ViewColumn("Delegação")
-    private String delegacao;
+    public String delegacao;
 
     public String getNome() {
         return nome;
@@ -59,10 +54,5 @@ public class Pais extends AbstractEntity {
 
     public void setDelegacao(String delegacao) {
         this.delegacao = delegacao;
-    }
-
-    @Override
-    public String getFormattedPrimaryKey() {
-        return nome;
     }
 }

@@ -10,19 +10,19 @@ public class Modalidade {
 
     @Id
     @ViewColumn("Nome")
-    private String nome;
+    public String nome;
 
     @ViewColumn("Gênero")
-    private String genero;
+    public String genero;
 
     @ViewColumn("Unidade de Pontuação")
-    private String unidadepontuacao;
+    public String unidadepontuacao;
 
     @ViewColumn("Descrição")
-    private String descricao;
+    public String descricao;
 
     @ViewColumn("Tipo")
-    private String tipo;
+    public String tipo;
 
     public String getNome() {
         return nome;

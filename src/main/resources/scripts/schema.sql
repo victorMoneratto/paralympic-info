@@ -1,39 +1,35 @@
 -- Deletando as tabelas para agilizar no processo de desenvolvimento do script
-BEGIN
-  EXECUTE IMMEDIATE 'DROP TABLE Localidade CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Modalidade CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Partida CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Delegacao CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Pais CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Arbitro CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Arbitro_Partida CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Atleta CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Atleta_Partida CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE TimeOlimpico CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Time_Partida CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Atleta_Time CASCADE CONSTRAINTS';
-  EXECUTE IMMEDIATE 'DROP TABLE Atleta_Modalidade CASCADE CONSTRAINTS';
-  EXCEPTION
-  WHEN OTHERS THEN
-  IF SQLCODE != -942
-  THEN
-    RAISE;
-  END IF;
-END;
----------------------------- TABLES ----------------------------
+
+DROP TABLE IF EXISTS Localidade CASCADE;
+DROP TABLE IF EXISTS Modalidade CASCADE;
+DROP TABLE IF EXISTS Partida CASCADE;
+DROP TABLE IF EXISTS Delegacao CASCADE;
+DROP TABLE IF EXISTS Pais CASCADE;
+DROP TABLE IF EXISTS Arbitro CASCADE;
+DROP TABLE IF EXISTS Arbitro_Partida CASCADE;
+DROP TABLE IF EXISTS Atleta CASCADE;
+DROP TABLE IF EXISTS Atleta_Partida CASCADE;
+DROP TABLE IF EXISTS TimeOlimpico CASCADE;
+DROP TABLE IF EXISTS Time_Partida CASCADE;
+DROP TABLE IF EXISTS Atleta_Time CASCADE;
+DROP TABLE IF EXISTS Atleta_Modalidade CASCADE;
+
+---------------------------- TABLES ----------------------------\
+
+
 
 CREATE TABLE Localidade (
-  Nome     VARCHAR2(80),
-  Endereco VARCHAR2(250),
+  Nome     VARCHAR(80),
+  Endereco VARCHAR(250),
   CONSTRAINT PK_Localidade PRIMARY KEY (Nome)
 );
 
 CREATE TABLE Modalidade (
-  Nome             VARCHAR2(80),
-  Genero           VARCHAR2(9),
-  UnidadePontuacao VARCHAR2(15),
-  Descricao        VARCHAR2(250),
-  Tipo             VARCHAR2(10),
+  Nome             VARCHAR(80),
+  Genero           VARCHAR(9),
+  UnidadePontuacao VARCHAR(15),
+  Descricao        VARCHAR(250),
+  Tipo             VARCHAR(10),
 
   CONSTRAINT PK_Modalidade PRIMARY KEY (Nome),
   CONSTRAINT CK_Modalidade1 CHECK (UPPER(Genero) IN ('MASCULINO', 'FEMININO', 'MISTO')),
@@ -41,31 +37,31 @@ CREATE TABLE Modalidade (
 );
 
 CREATE TABLE Partida (
-  Identificador INT,
-  DataHora      DATE         NOT NULL,
-  NomeLocal     VARCHAR2(80) NOT NULL,
-  Completada    CHARACTER(1) NOT NULL,
-  Observacao    VARCHAR2(250),
-  Tipo          VARCHAR2(10) NOT NULL,
-  Modalidade    VARCHAR2(80) NOT NULL,
+  Identificador SERIAL,
+  DataHora      TIMESTAMP   NOT NULL,
+  NomeLocal     VARCHAR(80) NOT NULL,
+  Completada    BOOL        NOT NULL,
+  Observacao    VARCHAR(250),
+  Tipo          VARCHAR(10) NOT NULL,
+  Modalidade    VARCHAR(80) NOT NULL,
 
   CONSTRAINT PK_Partida PRIMARY KEY (Identificador),
   CONSTRAINT FK_Partida FOREIGN KEY (NomeLocal) REFERENCES Localidade (Nome) ON DELETE CASCADE,
   CONSTRAINT UN_Partida UNIQUE (NomeLocal, DataHora),
-  CONSTRAINT CK_Partida CHECK (UPPER(Tipo) IN ('INDIVIDUAL', 'TIME') AND (UPPER(Completada) IN ('S', 'N')) )
+  CONSTRAINT CK_Partida CHECK (UPPER(Tipo) IN ('INDIVIDUAL', 'TIME'))
 );
 
 CREATE TABLE Delegacao (
-  Nome VARCHAR2(120),
+  Nome VARCHAR(120),
 
   CONSTRAINT PK_Delegacao PRIMARY KEY (Nome)
 );
 
 CREATE TABLE Pais (
-  Nome       VARCHAR2(120),
+  Nome       VARCHAR(120),
   Abreviacao CHAR(3),
-  Bandeira   VARCHAR2(60),
-  Delegacao  VARCHAR2(120),
+  Bandeira   VARCHAR(60),
+  Delegacao  VARCHAR(120),
 
   CONSTRAINT PK_Pais PRIMARY KEY (Nome),
   CONSTRAINT FK_Pais FOREIGN KEY (Delegacao) REFERENCES Delegacao (Nome) ON DELETE CASCADE
@@ -73,9 +69,9 @@ CREATE TABLE Pais (
 
 
 CREATE TABLE Arbitro (
-  Identificador INT,
-  Nome          VARCHAR2(80)  NOT NULL,
-  Pais          VARCHAR2(120) NOT NULL,
+  Identificador SERIAL,
+  Nome          VARCHAR(80)  NOT NULL,
+  Pais          VARCHAR(120) NOT NULL,
 
   CONSTRAINT PK_Arbitro PRIMARY KEY (Identificador),
   CONSTRAINT FK_Arbitro FOREIGN KEY (Pais) REFERENCES Pais (Nome) ON DELETE CASCADE,
@@ -92,14 +88,14 @@ CREATE TABLE Arbitro_Partida (
 );
 
 CREATE TABLE Atleta (
-  Identificador  INT,
-  Nome           VARCHAR2(120) NOT NULL,
-  Delegacao      VARCHAR2(120) NOT NULL,
+  Identificador  SERIAL,
+  Nome           VARCHAR(120) NOT NULL,
+  Delegacao      VARCHAR(120) NOT NULL,
   DataNascimento DATE,
   Altura         FLOAT,
   Peso           FLOAT,
-  Genero         VARCHAR2(9),
-  Foto           VARCHAR2(60),
+  Genero         VARCHAR(9),
+  Foto           VARCHAR(60),
 
   CONSTRAINT PK_Atleta PRIMARY KEY (Identificador),
   CONSTRAINT FK_Atleta FOREIGN KEY (Delegacao) REFERENCES Delegacao (Nome) ON DELETE CASCADE,
@@ -120,33 +116,23 @@ CREATE TABLE Atleta_Partida (
 );
 
 CREATE TABLE TimeOlimpico (
-  Identificador         INT,
-  Nome                  VARCHAR2(120) NOT NULL,
-  Delegacao             VARCHAR2(120) NOT NULL,
-  Modalidade            VARCHAR2(80),
-  Categoria             VARCHAR2(10),
-  Genero                VARCHAR2(10),
-  MedalhaGanha          VARCHAR2(6),
-  GrauDeComprometimento VARCHAR2(10),
+  Identificador         SERIAL,
+  Nome                  VARCHAR(120) NOT NULL,
+  Delegacao             VARCHAR(120) NOT NULL,
+  Modalidade            VARCHAR(80),
+  Categoria             VARCHAR(10),
+  Genero                VARCHAR(10),
+  MedalhaGanha          VARCHAR(6),
+  GrauDeComprometimento VARCHAR(10),
 
   CONSTRAINT PK_Time PRIMARY KEY (Identificador),
   CONSTRAINT FK_Time1 FOREIGN KEY (Delegacao) REFERENCES Delegacao (Nome) ON DELETE CASCADE,
   CONSTRAINT FK_Time2 FOREIGN KEY (Modalidade) REFERENCES Modalidade (Nome) ON DELETE CASCADE,
   CONSTRAINT CK_Time1 CHECK (UPPER(Genero) IN ('MASCULINO', 'FEMININO', 'MISTO')),
   CONSTRAINT CK_Time2 CHECK (UPPER(MedalhaGanha) IN ('OURO', 'PRATA', 'BRONZE')),
-  CONSTRAINT UN_Time UNIQUE (Nome, Delegacao)
+  CONSTRAINT UN_Time UNIQUE (Nome, Delegacao),
+  CONSTRAINT UN_Time1 UNIQUE (MedalhaGanha, Modalidade)
 );
-
--- Esse "Unique Index" é uma solução alternativa ao uso de "constraint unique"
--- em duas colunas. Podemos com o índice ter tuplas com valores repetidos
--- apenas se uma das columas apresentar valor nulo.
--- Exemplo:
--- (1, 'A'), (1, NULL), (1, NULL), (2, 'B')
--- diferente da constraint unique, essas são tuplas válidas na tabela, porém
--- (1, 'A'), (1, 'A')
--- infringiria o índice.
-CREATE UNIQUE INDEX UIDX_Time on TimeOlimpico
-(nvl2(Modalidade, MedalhaGanha, null), nvl2(MedalhaGanha, Modalidade, null));
 
 CREATE TABLE Time_Partida (
   Partida       INT,
@@ -171,32 +157,23 @@ CREATE TABLE Atleta_Time (
 
 CREATE TABLE Atleta_Modalidade (
   Atleta       INT,
-  Modalidade   VARCHAR2(80),
-  Categoria    VARCHAR2(10),
-  MedalhaGanha VARCHAR2(6),
+  Modalidade   VARCHAR(80),
+  Categoria    VARCHAR(10),
+  MedalhaGanha VARCHAR(6),
 
   CONSTRAINT PK_AtlMod PRIMARY KEY (Atleta, Modalidade),
   CONSTRAINT FK_AtlMod1 FOREIGN KEY (Atleta) REFERENCES Atleta (Identificador) ON DELETE CASCADE,
   CONSTRAINT FK_AtlMod2 FOREIGN KEY (Modalidade) REFERENCES Modalidade (Nome) ON DELETE CASCADE,
-  CONSTRAINT CK_AtlMod CHECK (UPPER(MedalhaGanha) IN ('OURO', 'PRATA', 'BRONZE'))
+  CONSTRAINT CK_AtlMod CHECK (UPPER(MedalhaGanha) IN ('OURO', 'PRATA', 'BRONZE')),
+  CONSTRAINT UN_AtlMod UNIQUE (MedalhaGanha, Modalidade)
 );
 
--- Esse "Unique Index" é uma solução alternativa ao uso de "constraint unique"
--- em duas colunas. Podemos com o índice ter tuplas com valores repetidos
--- apenas se uma das columas apresentar valor nulo.
--- Exemplo:
--- (1, 'A'), (1, NULL), (1, NULL), (2, 'B')
--- diferente da constraint unique, essas são tuplas válidas na tabela, porém
--- (1, 'A'), (1, 'A')
--- infringiria o índice.
-CREATE UNIQUE INDEX UIDX_AtlMod on Atleta_Modalidade
-(nvl2(Modalidade, MedalhaGanha, null), nvl2(MedalhaGanha, Modalidade, null));
-
 ---------------------------- VIEWS -------------------------------
-
+DROP EXTENSION IF EXISTS "uuid-ossp";
+CREATE EXTENSION "uuid-ossp";
 CREATE OR REPLACE VIEW Medalha AS
   SELECT
-    sys_guid() AS uuid,
+    uuid_generate_v4() AS uuid,
     T.*
   FROM (SELECT
           NULL         AS Time,
@@ -217,7 +194,6 @@ CREATE OR REPLACE VIEW Medalha AS
           Modalidade,
           MedalhaGanha  AS Medalha
         FROM TimeOlimpico
-        WHERE MedalhaGanha IS NOT NULL) T
-  WITH READ ONLY;
+        WHERE MedalhaGanha IS NOT NULL) T;
 
 ---------------------------- TRIGGERS ----------------------------

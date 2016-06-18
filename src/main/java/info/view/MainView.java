@@ -1,6 +1,6 @@
 package info.view;
 
-import info.view.catalog.LocalCatalog;
+import info.view.catalog.*;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.action.ActionMethod;
 import io.datafx.controller.flow.action.ActionTrigger;
@@ -13,8 +13,24 @@ import javafx.scene.control.Button;
 public class MainView extends SimpleView {
 
     @FXML
+    @LinkAction(AtletaCatalog.class)
+    Button atletas;
+
+    @FXML
+    @LinkAction(TimeCatalog.class)
+    Button times;
+
+    @FXML
+    @LinkAction(PartidaCatalog.class)
+    Button partidas;
+
+    @FXML
+    @LinkAction(MedalhaCatalog.class)
+    Button medalhas;
+
+    @FXML
     @LinkAction(LocalCatalog.class)
-    Button local;
+    Button locais;
 
     @FXML
     @ActionTrigger("exit")

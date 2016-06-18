@@ -9,16 +9,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Localidade")
-public class Local extends AbstractEntity{
+public class Local {
 
     @Id
-    @Column
     @ViewColumn("Nome")
-    private String Nome;
+    public String Nome;
 
-    @Column
     @ViewColumn("Endereço")
-    private String Endereco;
+    public String Endereco;
 
     public Local() {
     }
@@ -42,10 +40,5 @@ public class Local extends AbstractEntity{
 
     public void setEndereco(String endereco) {
         Endereco = endereco;
-    }
-
-    @Override
-    public String getFormattedPrimaryKey() {
-        return Nome;
     }
 }

@@ -3,7 +3,6 @@ package info.entity;
 import info.entity.key.Time_PartidaPK;
 import io.datafx.crud.table.ViewColumn;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -14,39 +13,39 @@ public class Time_Partida {
 
     @Id
     @ViewColumn("Partida")
-    private String partida;
+    public Integer partida;
 
     @Id
     @ViewColumn("Time")
-    private String timeolimp;
+    public Integer timeolimp;
 
     @ViewColumn("Classificação")
-    private String classificacao;
+    public Integer classificacao;
 
     @ViewColumn("Pontuação")
-    private Double pontuacao;
+    public Double pontuacao;
 
-    public String getPartida() {
+    public Integer getPartida() {
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getTime() {
+    public Integer getTime() {
         return timeolimp;
     }
 
-    public void setTime(String timeolimp) {
+    public void setTime(Integer timeolimp) {
         this.timeolimp = timeolimp;
     }
 
-    public String getClassificacao() {
+    public Integer getClassificacao() {
         return classificacao;
     }
 
-    public void setClassificacao(String classificacao) {
+    public void setClassificacao(Integer classificacao) {
         this.classificacao = classificacao;
     }
 

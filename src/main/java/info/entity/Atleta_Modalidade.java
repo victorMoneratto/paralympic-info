@@ -13,23 +13,23 @@ public class Atleta_Modalidade {
 
     @Id
     @ViewColumn("Atleta")
-    private String atleta;
+    public Integer atleta;
 
     @Id
     @ViewColumn("Modalidade")
-    private String modalidade;
+    public String modalidade;
 
     @ViewColumn("Categoria")
-    private String categoria;
+    public String categoria;
 
     @ViewColumn("Medalha")
-    private String medalhaGanha;
+    public String medalhaGanha;
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 
@@ -56,4 +56,5 @@ public class Atleta_Modalidade {
     public void setMedalhaGanha(String medalhaganha) {
         this.medalhaGanha = medalhaganha;
     }
+
 }

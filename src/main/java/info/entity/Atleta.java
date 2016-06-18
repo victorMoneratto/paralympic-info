@@ -9,34 +9,34 @@ import javax.persistence.Id;
 public class Atleta {
     @Id
     @ViewColumn("ID")
-    private String identificador;
+    public Integer identificador;
 
     @ViewColumn("Nome")
-    private String nome;
+    public String nome;
 
     @ViewColumn("Delegação")
-    private String delegacao;
+    public String delegacao;
 
     @ViewColumn("Data de Nascimento")
-    private java.sql.Date dataNascimento;
+    public java.sql.Date dataNascimento;
 
     @ViewColumn("Altura")
-    private Double altura;
+    public Double altura;
 
     @ViewColumn("Peso")
-    private Double peso;
+    public Double peso;
 
     @ViewColumn("Gênero")
-    private String genero;
+    public String genero;
 
     @ViewColumn("Foto")
-    private String foto;
+    public String foto;
 
-    public String getIdentificador() {
+    public Integer getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
     }
 

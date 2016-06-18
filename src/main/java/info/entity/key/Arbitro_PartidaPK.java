@@ -3,25 +3,25 @@ package info.entity.key;
 import java.io.Serializable;
 
 public class Arbitro_PartidaPK implements Serializable{
-    private String partida;
-    private String arbitro;
+    private Integer partida;
+    private Integer arbitro;
 
     public Arbitro_PartidaPK() {
     }
 
-    public String getPartida() {
+    public Integer getPartida() {
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getArbitro() {
+    public Integer getArbitro() {
         return arbitro;
     }
 
-    public void setArbitro(String arbitro) {
+    public void setArbitro(Integer arbitro) {
         this.arbitro = arbitro;
     }
 }

@@ -12,91 +12,77 @@
 
 <BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="200.0" minWidth="-Infinity" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Atletas" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-               <font>
+       <GridPane hgap="10.0" vgap="10.0" BorderPane.alignment="CENTER">
+           <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+           <Button fx:id="atletas" contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Atletas" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <font>
                   <Font name="System Bold" size="20.0" />
+              </font>
+              <graphic>
+                  <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                      <Image url="/icons/athlete.png" />
+                  </ImageView>
+              </graphic>
+           </Button>
+           <Button fx:id="times" contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Times" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+              <font>
+                  <Font name="System Bold" size="20.0" />
+              </font>
+              <graphic>
+                  <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                      <Image url="/icons/team.png" />
+                  </ImageView>
+              </graphic>
+           </Button>
+           <Button fx:id="partidas" contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Partidas" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+               <font>
+                   <Font name="System Bold" size="20.0" />
                </font>
                <graphic>
-                  <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="/icons/athlete.png" />
-                     </image>
-                  </ImageView>
+                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                       <Image url="/icons/match.png" />
+                   </ImageView>
                </graphic>
-            </Button>
-            <Button contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Times" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-               <font>
+           </Button>
+           <Button fx:id="medalhas" contentDisplay="TOP" layoutX="10.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Medalhas" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+              <font>
                   <Font name="System Bold" size="20.0" />
-               </font>
-               <graphic>
+              </font>
+              <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="/icons/team.png" />
-                     </image>
+                      <Image url="/icons/medal.png" />
                   </ImageView>
-               </graphic>
-            </Button>
-             <Button contentDisplay="TOP" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Partidas" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-                 <font>
-                     <Font name="System Bold" size="20.0" />
-                 </font>
-                 <graphic>
-                     <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                         <image>
-                             <Image url="/icons/match.png" />
-                         </image>
-                     </ImageView>
-                 </graphic>
-             </Button>
-            <Button contentDisplay="TOP" layoutX="10.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Medalhas" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
-               <font>
+              </graphic>
+           </Button>
+           <Button fx:id="locais" contentDisplay="TOP" layoutX="143.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Locais" textAlignment="CENTER" GridPane.rowIndex="2">
+              <font>
                   <Font name="System Bold" size="20.0" />
-               </font>
-               <graphic>
+              </font>
+              <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="/icons/medal.png" />
-                     </image>
+                      <Image url="/icons/location.png" />
                   </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="local" contentDisplay="TOP" layoutX="143.0" layoutY="159.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Locais" textAlignment="CENTER" GridPane.rowIndex="2">
-               <font>
+              </graphic>
+           </Button>
+           <Button fx:id="exit" contentDisplay="TOP" layoutX="10.0" layoutY="308.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Sair" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+              <font>
                   <Font name="System Bold" size="20.0" />
-               </font>
-               <graphic>
+              </font>
+              <graphic>
                   <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="/icons/location.png" />
-                     </image>
+                      <Image url="/icons/exit.png" />
                   </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="exit" contentDisplay="TOP" layoutX="10.0" layoutY="308.0" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" text="Sair" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-               <graphic>
-                  <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="/icons/exit.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </GridPane>
+              </graphic>
+           </Button>
+       </GridPane>
    </center>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

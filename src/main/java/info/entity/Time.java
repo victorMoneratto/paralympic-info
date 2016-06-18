@@ -12,35 +12,35 @@ import javax.persistence.Table;
 public class Time {
     @Id
     @ViewColumn("ID")
-    private String identificador;
+    public Integer identificador;
 
     @ViewColumn("Nome")
-    private String nome;
+    public String nome;
 
     @ViewColumn("Delegação")
-    private String delegacao;
+    public String delegacao;
 
     @ViewColumn("Modalidade")
-    private String modalidade;
+    public String modalidade;
 
     @ViewColumn("Categoria")
-    private String categoria;
+    public String categoria;
 
     @ViewColumn("Gênero")
-    private String genero;
+    public String genero;
 
     @ViewColumn("Medalha")
-    private String medalhaGanha;
+    public String medalhaGanha;
 
     @ViewColumn("Comprometimento")
     @Column(name = "GrauDeComprometimento")
     private String Comprometimento;
 
-    public String getIdentificador() {
+    public Integer getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
     }
 

@@ -3,18 +3,18 @@ package info.entity.key;
 import java.io.Serializable;
 
 public class Atleta_ModalidadePK implements Serializable{
-    private String atleta;
+    private Integer atleta;
     private String modalidade;
 
     public Atleta_ModalidadePK() {
 
     }
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 

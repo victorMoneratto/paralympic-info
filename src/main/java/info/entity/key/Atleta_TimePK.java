@@ -3,25 +3,25 @@ package info.entity.key;
 import java.io.Serializable;
 
 public class Atleta_TimePK implements Serializable{
-    private String atleta;
-    private String timeolimp;
+    private Integer atleta;
+    private Integer timeolimp;
 
     public Atleta_TimePK() {
     }
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 
-    public String getTimeolimp() {
+    public Integer getTimeolimp() {
         return timeolimp;
     }
 
-    public void setTimeolimp(String timeolimp) {
+    public void setTimeolimp(Integer timeolimp) {
         this.timeolimp = timeolimp;
     }
 }

@@ -3,26 +3,26 @@ package info.entity.key;
 import java.io.Serializable;
 
 public class Time_PartidaPK implements Serializable{
-    private String partida;
-    private String timeolimp;
+    private Integer partida;
+    private Integer timeolimp;
 
     public Time_PartidaPK() {
     }
 
-    public String getPartida() {
+    public Integer getPartida() {
 
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getTimeolimp() {
+    public Integer getTimeolimp() {
         return timeolimp;
     }
 
-    public void setTimeolimp(String timeolimp) {
+    public void setTimeolimp(Integer timeolimp) {
         this.timeolimp = timeolimp;
     }
 }

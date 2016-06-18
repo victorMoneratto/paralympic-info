@@ -3,25 +3,25 @@ package info.entity.key;
 import java.io.Serializable;
 
 public class Atleta_PartidaPK implements Serializable {
-    private String partida;
-    private String atleta;
+    private Integer partida;
+    private Integer atleta;
 
     public Atleta_PartidaPK() {
     }
 
-    public String getPartida() {
+    public Integer getPartida() {
         return partida;
     }
 
-    public void setPartida(String partida) {
+    public void setPartida(Integer partida) {
         this.partida = partida;
     }
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 }

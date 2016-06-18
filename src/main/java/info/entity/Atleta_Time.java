@@ -13,26 +13,26 @@ import javax.persistence.IdClass;
 public class Atleta_Time {
     @Id
     @ViewColumn("Atleta")
-    private String atleta;
+    public Integer atleta;
 
     @Id
     @Column(name = "TimeOlimp")
     @ViewColumn("Time")
-    private String timeolimp;
+    public Integer timeolimp;
 
-    public String getAtleta() {
+    public Integer getAtleta() {
         return atleta;
     }
 
-    public void setAtleta(String atleta) {
+    public void setAtleta(Integer atleta) {
         this.atleta = atleta;
     }
 
-    public String getTime() {
+    public Integer getTime() {
         return timeolimp;
     }
 
-    public void setTime(String timeolimp) {
+    public void setTime(Integer timeolimp) {
         this.timeolimp = timeolimp;
     }
 }

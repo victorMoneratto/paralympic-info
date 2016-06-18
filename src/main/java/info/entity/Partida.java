@@ -4,44 +4,45 @@ import io.datafx.crud.table.ViewColumn;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 
 @Entity
 public class Partida {
     @Id
     @ViewColumn("ID")
-    private String identificador;
+    public Integer identificador;
 
     @ViewColumn("Data/Hora")
-    private java.sql.Date datahora;
+    public Timestamp datahora;
 
     @ViewColumn("Local")
-    private String nomelocal;
+    public String nomelocal;
 
     @ViewColumn("Completada")
-    private String completada;
+    public Boolean completada;
 
     @ViewColumn("Observação")
-    private String observacao;
+    public String observacao;
 
     @ViewColumn("Tipo")
-    private String tipo;
+    public String tipo;
 
     @ViewColumn("Modalidade")
-    private String modalidade;
+    public String modalidade;
 
-    public String getIdentificador() {
+    public Integer getIdentificador() {
         return identificador;
     }
 
-    public void setIdentificador(String identificador) {
+    public void setIdentificador(Integer identificador) {
         this.identificador = identificador;
     }
 
-    public java.sql.Date getDatahora() {
+    public Timestamp getDatahora() {
         return datahora;
     }
 
-    public void setDatahora(java.sql.Date datahora) {
+    public void setDatahora(Timestamp datahora) {
         this.datahora = datahora;
     }
 
@@ -53,11 +54,11 @@ public class Partida {
         this.nomelocal = nomelocal;
     }
 
-    public String getCompletada() {
+    public Boolean getCompletada() {
         return completada;
     }
 
-    public void setCompletada(String completada) {
+    public void setCompletada(Boolean completada) {
         this.completada = completada;
     }
 
