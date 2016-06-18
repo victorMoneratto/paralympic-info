@@ -1,7 +1,6 @@
 package info.view.catalog;
 
 import info.DataAccess;
-import info.entity.Local;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.action.ActionMethod;
 import io.datafx.controller.flow.action.ActionTrigger;
@@ -16,11 +15,10 @@ import io.datafx.crud.table.TableColumnFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.xml.ws.Action;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +81,7 @@ public abstract class AbstractCatalog<T> {
     }
 
     protected abstract Class<T> getModelClass();
+
     protected abstract Class getDetailsClass();
 
     protected List<TableColumn<T, ?>> filterColumns(List<TableColumn<T, ?>> cols) {
@@ -101,11 +100,19 @@ public abstract class AbstractCatalog<T> {
         Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
                 "Tem certeza que deseja remover o item selecionado?").showAndWait();
         T selected = table.getSelectionModel().getSelectedItem();
+        int removed = 0;
         if (selected != null && response.isPresent() && response.get() == ButtonType.OK) {
             try {
-                data.delete(selected, getModelClass());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                data.getTransaction().begin();
+                Query query = data.makeDelete(selected, getModelClass());
+                removed = query.executeUpdate();
+            } finally {
+                if (removed == 1) {
+                    data.getTransaction().commit();
+                } else {
+                    //TODO Alert that the row wasn't deleted
+                    data.getTransaction().rollback();
+                }
             }
             refresh();
         }

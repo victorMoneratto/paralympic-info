@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
+import javax.persistence.Query;
 import java.util.Optional;
 
 public abstract class AbstractDetails<T> extends SimpleView {
@@ -92,21 +93,52 @@ public abstract class AbstractDetails<T> extends SimpleView {
 
     @ActionMethod("save")
     public void save() throws VetoException, FlowException {
+        formToModel();
         if (insertingNew) {
             Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
                     "Tem certeza que deseja inserir os dados?").showAndWait();
             if (response.isPresent() && response.get() == ButtonType.OK) {
-                //TODO
-//                data.insert(model, getModelClass());
+                onInsert();
                 exit();
             }
         } else {
             Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
                     "Tem certeza que deseja atualizar os dados?").showAndWait();
             if (response.isPresent() && response.get() == ButtonType.OK) {
-                //TODO
-//                data.update(model, getModelClass());
+                onUpdate();
                 exit();
+            }
+        }
+    }
+
+    protected void onInsert() {
+        int inserted = 0;
+        try {
+            Query query = data.makeInsert(model, getModelClass());
+            data.getTransaction().begin();
+            inserted = query.executeUpdate();
+        } finally {
+            if (inserted == 1) {
+                data.getTransaction().commit();
+            } else {
+                //TODO alert we couldn't insert row
+                data.getTransaction().rollback();
+            }
+        }
+    }
+
+    protected void onUpdate() {
+        int updated = 0;
+        try {
+            Query query = data.makeUpdate(model, getModelClass());
+            data.getTransaction().begin();
+            updated = query.executeUpdate();
+        } finally {
+            if (updated == 1) {
+                data.getTransaction().commit();
+            } else {
+                //TODO alert we couldn't update row
+                data.getTransaction().rollback();
             }
         }
     }
