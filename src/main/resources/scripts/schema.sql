@@ -196,4 +196,11 @@ CREATE OR REPLACE VIEW Medalha AS
         FROM TimeOlimpico
         WHERE MedalhaGanha IS NOT NULL) T;
 
+
+CREATE OR REPLACE VIEW Atleta_Time_Info AS
+  SELECT Atleta_Time.*, Atleta.Nome as NomeAtleta, TimeOlimpico.Nome as NomeTime, Atleta.Delegacao
+  FROM Atleta_Time JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
+  JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador
 ---------------------------- TRIGGERS ----------------------------
+
+SELECT * FROM Atleta_Time_Info

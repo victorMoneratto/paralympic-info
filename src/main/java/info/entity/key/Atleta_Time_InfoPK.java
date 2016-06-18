@@ -2,11 +2,11 @@ package info.entity.key;
 
 import java.io.Serializable;
 
-public class Atleta_TimePK implements Serializable{
+public class Atleta_Time_InfoPK implements Serializable{
     private Integer atleta;
     private Integer timeolimp;
 
-    public Atleta_TimePK() {
+    public Atleta_Time_InfoPK() {
     }
 
     public Integer getAtleta() {

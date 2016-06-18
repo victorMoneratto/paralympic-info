@@ -95,4 +95,9 @@ public class Atleta {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

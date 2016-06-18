@@ -13,32 +13,32 @@ public class Local {
 
     @Id
     @ViewColumn("Nome")
-    public String Nome;
+    public String nome;
 
     @ViewColumn("Endereço")
-    public String Endereco;
+    public String endereco;
 
     public Local() {
     }
 
-    public Local(String nome, String endereco) {
-        Nome = nome;
-        Endereco = endereco;
-    }
-
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        this.nome = nome;
     }
 
     public String getEndereco() {
-        return Endereco;
+        return endereco;
     }
 
     public void setEndereco(String endereco) {
-        Endereco = endereco;
+        this.endereco = endereco;
+    }
+
+    @Override
+    public String toString() {
+        return nome;
     }
 }

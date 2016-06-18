@@ -27,14 +27,26 @@ public class DataAccess {
 
     public <T> List<T> select(Class<T> clazz) {
         String entityName = tableNameFor(clazz);
-        return select(entityName, clazz);
+        return select(entityName, clazz, "");
+    }
+
+    public <T> List<T> select(Class<T> clazz, String where) {
+        String entityName = tableNameFor(clazz);
+        return select(entityName, clazz, where);
     }
 
     /***
      * Selects all tuples from table
      */
-    public <T> List<T> select(String table, Class<T> clazz) {
-        Query query = createNativeSelect("SELECT * FROM " + table, clazz);
+    public <T> List<T> select(String table, Class<T> clazz, String where) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ").append(table);
+        if(where != null && !where.isEmpty()) {
+            sb.append(" WHERE ").append(where);
+        }
+
+        String sql = sb.toString();
+        Query query = createNativeSelect(sql, clazz);
 
         // Since we're selecting from a single table, it should be safe to
         // cast the resulting list to the generic form.

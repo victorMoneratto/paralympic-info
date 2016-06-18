@@ -55,4 +55,9 @@ public class Pais {
     public void setDelegacao(String delegacao) {
         this.delegacao = delegacao;
     }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
