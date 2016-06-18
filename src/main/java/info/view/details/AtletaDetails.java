@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ComboBox;
+
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,6 +42,7 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     TextField foto;
 
     @Override
+    @PostConstruct
     public void init() throws IllegalAccessException, InstantiationException {
         List<Delegacao> delegacoes = data.select(Delegacao.class);
         delegacao.getItems().addAll(delegacoes);
@@ -64,7 +67,7 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
 
     @Override
     public void modelToForm() {
-        final String doubleFormat = "%lf";
+        final String doubleFormat = "%.2f";
         String alturaText = String.format(doubleFormat, model.getAltura());
         String pesoText = String.format(doubleFormat, model.getPeso());
         LocalDate dataNascimentoValue = model.getDataNascimento().toLocalDate();

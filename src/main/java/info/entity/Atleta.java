@@ -32,6 +32,9 @@ public class Atleta {
     @ViewColumn("Foto")
     public String foto;
 
+    public Atleta() {
+    }
+
     public Integer getIdentificador() {
         return identificador;
     }
