@@ -1,7 +1,7 @@
-.text-field:disabled {
-    -fx-opacity: 0.65;
+.control:disabled {
+    -fx-opacity: 0.8;
 }
 
-.text-field:readonly {
+.control:readonly {
     -fx-background-color: #CCC;
 }

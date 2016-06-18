@@ -99,4 +99,9 @@ public class Time {
     public void setComprometimento(String graudecomprometimento) {
         this.Comprometimento = graudecomprometimento;
     }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
 }

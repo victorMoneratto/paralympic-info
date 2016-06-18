@@ -9,12 +9,11 @@ import io.datafx.controller.flow.context.ActionHandler;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
 import io.datafx.controller.flow.context.FlowActionHandler;
 import io.datafx.controller.flow.context.ViewFlowContext;
+import io.datafx.controller.injection.provider.FlowContextProvider;
 import io.datafx.controller.util.VetoException;
+import io.datafx.core.concurrent.ProcessChain;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +21,7 @@ import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public abstract class AbstractDetails<T> extends SimpleView {
     @Inject
@@ -63,9 +63,14 @@ public abstract class AbstractDetails<T> extends SimpleView {
             edit.setVisible(false);
         } else {
             insertingNew = false;
-            modelToForm();
             setFormEnabled(false);
         }
+
+        onInit();
+    }
+
+    public void onInit() {
+        modelToForm();
     }
 
     protected void setFormEnabled(boolean enabled) {
@@ -140,6 +145,13 @@ public abstract class AbstractDetails<T> extends SimpleView {
                 //TODO alert we couldn't update row
                 data.getTransaction().rollback();
             }
+        }
+    }
+
+    protected <T> void selectInCombo(ComboBox<T> combo, Predicate<T> predicate) {
+        Optional<T> selected = combo.getItems().stream().filter(predicate).findFirst();
+        if (selected.isPresent()) {
+            combo.getSelectionModel().select(selected.get());
         }
     }
 
