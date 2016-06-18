@@ -15,6 +15,11 @@ public class PartidaCatalog extends AbstractCatalog<Partida>{
     }
 
     @Override
+    protected Class getDetailsClass() {
+        return Partida.class;
+    }
+
+    @Override
     protected List<TableColumn<Partida, ?>> filterColumns(List<TableColumn<Partida, ?>> cols) {
         return cols.stream()
                 .filter(c -> !c.getText().equalsIgnoreCase("ID")

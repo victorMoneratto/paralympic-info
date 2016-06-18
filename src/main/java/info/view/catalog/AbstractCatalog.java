@@ -2,17 +2,19 @@ package info.view.catalog;
 
 import info.DataAccess;
 import info.entity.Local;
+import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.action.ActionMethod;
 import io.datafx.controller.flow.action.ActionTrigger;
 import io.datafx.controller.flow.action.BackAction;
+import io.datafx.controller.flow.context.ActionHandler;
 import io.datafx.controller.flow.context.FXMLViewFlowContext;
+import io.datafx.controller.flow.context.FlowActionHandler;
 import io.datafx.controller.flow.context.ViewFlowContext;
+import io.datafx.controller.util.VetoException;
 import io.datafx.core.concurrent.ProcessChain;
 import io.datafx.crud.table.TableColumnFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -20,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.xml.ws.Action;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractCatalog<T> {
 
@@ -51,6 +54,9 @@ public abstract class AbstractCatalog<T> {
     @FXMLViewFlowContext
     ViewFlowContext context;
 
+    @ActionHandler
+    protected FlowActionHandler actionHandler;
+
     @PostConstruct
     public void init() {
 
@@ -77,6 +83,7 @@ public abstract class AbstractCatalog<T> {
     }
 
     protected abstract Class<T> getModelClass();
+    protected abstract Class getDetailsClass();
 
     protected List<TableColumn<T, ?>> filterColumns(List<TableColumn<T, ?>> cols) {
         return cols;
@@ -91,13 +98,30 @@ public abstract class AbstractCatalog<T> {
 
     @ActionMethod("remove")
     public void onRemove() {
+        Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
+                "Tem certeza que deseja remover o item selecionado?").showAndWait();
         T selected = table.getSelectionModel().getSelectedItem();
-        try {
-            data.delete(selected, getModelClass());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        if (selected != null && response.isPresent() && response.get() == ButtonType.OK) {
+            try {
+                data.delete(selected, getModelClass());
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            refresh();
         }
+    }
 
-        refresh();
+    @ActionMethod("add")
+    public void onAdd() throws VetoException, FlowException {
+        actionHandler.navigate(getDetailsClass());
+    }
+
+    @ActionMethod("details")
+    public void onDetails() throws VetoException, FlowException {
+        T selected = table.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            context.register(selected, getModelClass());
+            actionHandler.navigate(getDetailsClass());
+        }
     }
 }

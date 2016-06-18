@@ -1,6 +1,7 @@
 package info.view.catalog;
 
 import info.entity.Time;
+import info.view.details.TimeDetails;
 import io.datafx.controller.FXMLController;
 import javafx.scene.control.TableColumn;
 
@@ -12,6 +13,11 @@ public class TimeCatalog extends AbstractCatalog<Time>{
     @Override
     protected Class<Time> getModelClass() {
         return Time.class;
+    }
+
+    @Override
+    protected Class getDetailsClass() {
+        return TimeDetails.class;
     }
 
     @Override

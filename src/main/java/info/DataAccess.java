@@ -19,8 +19,11 @@ public class DataAccess {
         return select(entityName, clazz);
     }
 
+    /***
+     * Selects all tuples from table
+     */
     public <T> List<T> select(String table, Class<T> clazz) {
-        Query query = createNativeQuery("SELECT * FROM " + table, clazz);
+        Query query = createNativeSelect("SELECT * FROM " + table, clazz);
 
         // Since we're selecting from a single table, it should be safe to
         // cast the resulting list to the generic form.
@@ -33,11 +36,15 @@ public class DataAccess {
         return delete(entity, tableNameFor(clazz), clazz);
     }
 
+    /**
+     * Builds and executes a DELETE query.
+     * The WHERE condition is built to match the primary key, so only this object is changed.
+     */
     public <T> boolean delete(T entity, String table, Class<T> clazz) throws IllegalAccessException {
-        // We'll build the delete query from the class reflection data :)
         StringBuilder sb = new StringBuilder();
         sb.append("DELETE FROM ").append(table);
 
+        // Find the primary key columns and their values
         Set<Entry<String, Object>> entries = conditionFor(entity, clazz);
         if (entries.isEmpty()) {
             // We wont delete all tuples if no condition was found, just fail
@@ -57,21 +64,24 @@ public class DataAccess {
             sb.append(" = ?");
         }
 
+        // The generated SQL should be of type:
+        // DELETE FROM table WHERE pk1 = ? AND pk2 = ?
         String sql = sb.toString();
-        Query query = createNativeQuery(sql);
+        Query query = createNativeUpdate(sql);
 
+        // Set the parameters values for query
         int counter = 1;
         for (Entry<String, Object> entry : entries) {
             query.setParameter(counter, entry.getValue());
             counter++;
         }
 
-        // execute delete query
+        // execute delete query on transaction
         getTransaction().begin();
         int updated = query.executeUpdate();
         getTransaction().commit();
 
-        // return true if we modified any row
+        // returns true if we modified any row
         return updated > 0;
     }
 
@@ -112,11 +122,11 @@ public class DataAccess {
         }
     }
 
-    public Query createNativeQuery(String sql, Class clazz) {
+    public Query createNativeSelect(String sql, Class clazz) {
         return entityManager.createNativeQuery(sql, clazz);
     }
 
-    public Query createNativeQuery(String sql) {
+    public Query createNativeUpdate(String sql) {
         return entityManager.createNativeQuery(sql);
     }
 

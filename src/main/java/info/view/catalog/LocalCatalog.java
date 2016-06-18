@@ -1,6 +1,7 @@
 package info.view.catalog;
 
 import info.entity.Local;
+import info.view.details.LocalDetails;
 import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.action.ActionMethod;
 import io.datafx.controller.flow.action.ActionTrigger;
@@ -16,5 +17,10 @@ public class LocalCatalog extends AbstractCatalog<Local> {
     @Override
     protected Class<Local> getModelClass() {
         return Local.class;
+    }
+
+    @Override
+    protected Class getDetailsClass() {
+        return LocalDetails.class;
     }
 }

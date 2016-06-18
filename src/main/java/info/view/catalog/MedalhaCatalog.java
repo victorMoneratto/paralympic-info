@@ -1,6 +1,7 @@
 package info.view.catalog;
 
 import info.entity.Medalha;
+import info.view.details.MedalhaDetails;
 import io.datafx.controller.FXMLController;
 import javafx.scene.control.TableColumn;
 
@@ -12,6 +13,11 @@ public class MedalhaCatalog extends AbstractCatalog<Medalha> {
     @Override
     protected Class<Medalha> getModelClass() {
         return Medalha.class;
+    }
+
+    @Override
+    protected Class getDetailsClass() {
+        return MedalhaDetails.class;
     }
 
     @Override
