@@ -19,15 +19,15 @@ public class Medalha {
     public Integer atleta;
 
     @ViewColumn("Medalha")
-    public String Medalha;
+    public String medalha;
 
     @Id
     @ViewColumn("Modalidade")
-    public String Modalidade;
+    public String modalidade;
 
     @Id
     @ViewColumn("Ganhador")
-    public String Nome;
+    public String nome;
 
     public Medalha() {
     }
@@ -53,26 +53,20 @@ public class Medalha {
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
-    public void setNome(String nome) {
-        Nome = nome;
-    }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public String getMedalha() {
-        return Medalha;
-    }
+    public String getMedalha() { return medalha; }
 
-    public void setMedalha(String medalha) {
-        Medalha = medalha;
-    }
+    public void setMedalha(String medalha) { this.medalha = medalha; }
 
     public String getModalidade() {
-        return Modalidade;
+        return modalidade;
     }
 
     public void setModalidade(String modalidade) {
-        Modalidade = modalidade;
+        this.modalidade = modalidade;
     }
 }

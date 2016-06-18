@@ -20,10 +20,6 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     TextField nome;
 
     @FXML
-    TextField endereco;
-
-    // TODO: Delegacao picker
-    @FXML
     ComboBox<Delegacao> delegacao;
 
     @FXML
