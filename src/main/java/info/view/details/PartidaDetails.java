@@ -32,20 +32,23 @@ public class PartidaDetails extends AbstractDetails<Partida> {
     public CheckBox completada;
 
     @FXML
-    public TextField observacao;
-
-    @FXML
     public ComboBox<String> tipo;
 
     @FXML
     public ComboBox<Modalidade> modalidade;
 
+    @FXML
+    public TextField observacao;
+
     @Override
     public void init() throws IllegalAccessException, InstantiationException {
-        super.init();
         tipo.getItems().addAll("Individual", "Time");
+        tipo.setValue("Individual");
         modalidade.getItems().addAll(data.select(Modalidade.class));
+        modalidade.setValue(modalidade.getItems().get(0));
         local.getItems().addAll(data.select(Local.class));
+        local.setValue(local.getItems().get(0));
+        super.init();
     }
 
     @Override

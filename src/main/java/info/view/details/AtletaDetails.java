@@ -1,6 +1,5 @@
 package info.view.details;
 
-import info.DataAccess;
 import info.entity.Atleta;
 import info.entity.Delegacao;
 import io.datafx.controller.FXMLController;
@@ -10,7 +9,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ComboBox;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @FXMLController(value = "atleta-details.fxml", title = "Atleta")
@@ -43,10 +41,10 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
 
     @Override
     public void init() throws IllegalAccessException, InstantiationException {
-        super.init();
-
         List<Delegacao> delegacoes = data.select(Delegacao.class);
         delegacao.getItems().addAll(delegacoes);
+        delegacao.setValue(delegacao.getItems().get(0));
+        super.init();
     }
 
     @Override
