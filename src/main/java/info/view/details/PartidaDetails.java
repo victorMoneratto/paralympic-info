@@ -10,6 +10,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
+import javax.annotation.PostConstruct;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,6 +42,7 @@ public class PartidaDetails extends AbstractDetails<Partida> {
     public TextField observacao;
 
     @Override
+    @PostConstruct
     public void init() throws IllegalAccessException, InstantiationException {
         tipo.getItems().addAll("Individual", "Time");
         tipo.setValue("Individual");
@@ -82,6 +84,6 @@ public class PartidaDetails extends AbstractDetails<Partida> {
 
     @Override
     protected Class<Partida> getModelClass() {
-        return null;
+        return Partida.class;
     }
 }

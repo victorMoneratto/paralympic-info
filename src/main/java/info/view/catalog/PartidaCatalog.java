@@ -1,6 +1,7 @@
 package info.view.catalog;
 
 import info.entity.Partida;
+import info.view.details.PartidaDetails;
 import io.datafx.controller.FXMLController;
 import javafx.scene.control.TableColumn;
 
@@ -16,7 +17,7 @@ public class PartidaCatalog extends AbstractCatalog<Partida>{
 
     @Override
     protected Class getDetailsClass() {
-        return Partida.class;
+        return PartidaDetails.class;
     }
 
     @Override
