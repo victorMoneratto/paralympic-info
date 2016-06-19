@@ -42,13 +42,11 @@ CREATE TABLE Partida (
   NomeLocal     VARCHAR(80) NOT NULL,
   Completada    BOOL        NOT NULL,
   Observacao    VARCHAR(250),
-  Tipo          VARCHAR(10) NOT NULL,
   Modalidade    VARCHAR(80) NOT NULL,
 
   CONSTRAINT PK_Partida PRIMARY KEY (Identificador),
   CONSTRAINT FK_Partida FOREIGN KEY (NomeLocal) REFERENCES Localidade (Nome) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT UN_Partida UNIQUE (NomeLocal, DataHora),
-  CONSTRAINT CK_Partida CHECK (UPPER(Tipo) IN ('INDIVIDUAL', 'TIME'))
+  CONSTRAINT UN_Partida UNIQUE (NomeLocal, DataHora)
 );
 
 CREATE TABLE Delegacao (
@@ -121,7 +119,7 @@ CREATE TABLE TimeOlimpico (
   Delegacao             VARCHAR(120) NOT NULL,
   Modalidade            VARCHAR(80),
   Categoria             VARCHAR(10),
-  Genero                VARCHAR(10),
+  Genero                VARCHAR(9),
   MedalhaGanha          VARCHAR(6),
   GrauDeComprometimento VARCHAR(10),
 
@@ -198,9 +196,186 @@ CREATE OR REPLACE VIEW Medalha AS
 
 
 CREATE OR REPLACE VIEW Atleta_Time_Info AS
-  SELECT Atleta_Time.*, Atleta.Nome as NomeAtleta, TimeOlimpico.Nome as NomeTime, Atleta.Delegacao
-  FROM Atleta_Time JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
-  JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador
----------------------------- TRIGGERS ----------------------------
+  SELECT
+    Atleta_Time.*,
+    Atleta.Nome       AS NomeAtleta,
+    TimeOlimpico.Nome AS NomeTime,
+    Atleta.Delegacao
+  FROM Atleta_Time
+    JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
+    JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador;
 
-SELECT * FROM Atleta_Time_Info
+---------------------------- TRIGGERS ----------------------------
+-- *********************************************************
+-- Atleta participa de uma modalidade de genero compativel
+-- *********************************************************
+CREATE OR REPLACE FUNCTION atleta_modalidade_new()
+  RETURNS TRIGGER AS $atleta_modalidade_new$
+DECLARE
+  TIPO_MODALIDADE   VARCHAR(10);
+  GENERO_MODALIDADE VARCHAR(9);
+  GENERO_ATLETA     VARCHAR(9);
+BEGIN
+
+  TIPO_MODALIDADE = (SELECT TIPO
+                     FROM Modalidade
+                     WHERE Modalidade.Nome = NEW.Modalidade);
+  IF UPPER(TIPO_MODALIDADE) <> 'INDIVIDUAL'
+  THEN
+    RAISE EXCEPTION 'O atleta não pode ser inscrito numa modalidade de times';
+  END IF;
+
+  GENERO_MODALIDADE = (SELECT GENERO
+                       FROM MODALIDADE
+                       WHERE MODALIDADE.Nome = NEW.MODALIDADE);
+  IF (UPPER(GENERO_MODALIDADE) <> 'MISTO')
+  THEN
+    GENERO_ATLETA = (SELECT GENERO
+                     FROM ATLETA
+                     WHERE ATLETA.Identificador = NEW.ATLETA);
+    IF UPPER(GENERO_ATLETA) <> UPPER(GENERO_MODALIDADE)
+    THEN
+      RAISE EXCEPTION 'Não são aceitos atletas desse gênero na modalidade';
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$atleta_modalidade_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS atleta_modalidade_new ON Atleta_Modalidade;
+CREATE TRIGGER atleta_modalidade_new BEFORE INSERT OR UPDATE ON Atleta_Modalidade
+FOR EACH ROW EXECUTE PROCEDURE atleta_modalidade_new();
+
+-- *************************************************************
+-- Time participa de uma modalidade para times, do mesmo genero
+-- *************************************************************
+CREATE OR REPLACE FUNCTION time_new()
+  RETURNS TRIGGER AS $time_new$
+DECLARE
+  TIPO_MODALIDADE   VARCHAR(10);
+  GENERO_MODALIDADE VARCHAR(10);
+BEGIN
+
+  TIPO_MODALIDADE = (SELECT TIPO
+                     FROM Modalidade
+                     WHERE Modalidade.Nome = NEW.Modalidade);
+  IF UPPER(TIPO_MODALIDADE) <> 'TIME'
+  THEN
+    RAISE EXCEPTION 'O time não pode ser inscrito numa modalidade individual';
+  END IF;
+
+  GENERO_MODALIDADE = (SELECT Genero
+                       FROM Modalidade
+                       WHERE Modalidade.Nome = NEW.Modalidade);
+  IF UPPER(NEW.Genero) <> UPPER(GENERO_MODALIDADE)
+  THEN
+    RAISE EXCEPTION 'Não são aceitos times desse gênero na modalidade';
+  END IF;
+
+  RETURN NEW;
+END;
+$time_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS time_new ON TimeOlimpico;
+CREATE TRIGGER time_new BEFORE INSERT OR UPDATE ON TimeOlimpico
+FOR EACH ROW EXECUTE PROCEDURE time_new();
+
+-- *********************************************************
+-- Atleta participa de uma partida da sua modalidade
+-- *********************************************************
+CREATE OR REPLACE FUNCTION atleta_partida_new()
+  RETURNS TRIGGER AS $atleta_partida_new$
+DECLARE
+  PARTIDA_MODALIDADE VARCHAR(80);
+  NUM_ATLETA         INTEGER;
+BEGIN
+  PARTIDA_MODALIDADE = (SELECT MODALIDADE
+                        FROM PARTIDA
+                        WHERE PARTIDA.Identificador = NEW.PARTIDA);
+  NUM_ATLETA = (SELECT COUNT(ATLETA)
+                FROM Atleta_Modalidade AS AM
+                WHERE AM.Atleta = NEW.ATLETA AND AM.Modalidade = PARTIDA_MODALIDADE);
+  IF NUM_ATLETA = 0
+  THEN
+    RAISE EXCEPTION 'O atleta não participa da modalidade da partida';
+  END IF;
+
+  RETURN NEW;
+END;
+$atleta_partida_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS atleta_partida_new ON Atleta_Modalidade;
+CREATE TRIGGER atleta_partida_new BEFORE INSERT OR UPDATE ON Atleta_Partida
+FOR EACH ROW EXECUTE PROCEDURE atleta_partida_new();
+
+-- *********************************************************
+-- Time participa de uma partida da sua modalidade
+-- *********************************************************
+CREATE OR REPLACE FUNCTION time_partida_new()
+  RETURNS TRIGGER AS $time_partida_new$
+DECLARE
+  PARTIDA_MODALIDADE VARCHAR(80);
+  TIME_MODALIDADE    VARCHAR(80);
+BEGIN
+  PARTIDA_MODALIDADE = (SELECT MODALIDADE
+                        FROM PARTIDA
+                        WHERE PARTIDA.Identificador = NEW.PARTIDA);
+  TIME_MODALIDADE = (SELECT MODALIDADE
+                     FROM TimeOlimpico AS T
+                     WHERE T.Identificador = NEW.TIMEOLIMP);
+  IF UPPER(PARTIDA_MODALIDADE) <> UPPER(TIME_MODALIDADE)
+  THEN
+    RAISE EXCEPTION 'O time não participa da modalidade da partida';
+  END IF;
+
+  RETURN NEW;
+END;
+$time_partida_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS time_partida_new ON Time_Partida;
+CREATE TRIGGER time_partida_new BEFORE INSERT OR UPDATE ON Time_Partida
+FOR EACH ROW EXECUTE PROCEDURE time_partida_new();
+
+-- ****************************************************************
+-- Atleta participa de time de mesma delegação e genero compativel
+-- ****************************************************************
+CREATE OR REPLACE FUNCTION atleta_time_new()
+  RETURNS TRIGGER AS $atleta_time_new$
+DECLARE
+  ATLETA_DELEGACAO VARCHAR(120);
+  TIME_DELEGACAO   VARCHAR(120);
+  ATLETA_GENERO    VARCHAR(9);
+  TIME_GENERO    VARCHAR(9);
+BEGIN
+  ATLETA_DELEGACAO = (SELECT Delegacao
+                      FROM Atleta
+                      WHERE ATLETA.Identificador = NEW.Atleta);
+  TIME_DELEGACAO = (SELECT Delegacao
+                    FROM TimeOlimpico AS T
+                    WHERE T.Identificador = NEW.TIMEOLIMP);
+  IF UPPER(ATLETA_DELEGACAO) <> UPPER(TIME_DELEGACAO)
+  THEN
+    RAISE EXCEPTION 'O atleta não pertence à mesma delegação do time';
+  END IF;
+
+  TIME_GENERO= (SELECT Genero
+                    FROM TimeOlimpico AS T
+                    WHERE T.Identificador = NEW.TIMEOLIMP);
+  IF UPPER(TIME_GENERO) <> 'MISTO' THEN
+    ATLETA_GENERO = (SELECT Genero
+                     FROM Atleta
+                     WHERE ATLETA.Identificador = NEW.Atleta);
+    IF UPPER(TIME_GENERO) <> UPPER(ATLETA_GENERO) THEN
+      RAISE EXCEPTION 'O gênero do atleta é incompatível com o do time';
+    END IF;
+  END IF;
+
+
+  RETURN NEW;
+END;
+$atleta_time_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS atleta_time_new ON Atleta_Time;
+CREATE TRIGGER atleta_time_new BEFORE INSERT OR UPDATE ON Atleta_Time
+FOR EACH ROW EXECUTE PROCEDURE atleta_time_new();
