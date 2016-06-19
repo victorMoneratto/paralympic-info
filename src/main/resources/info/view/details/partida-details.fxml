@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 
-<BorderPane fx:id="root" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="root" minWidth="600.0" prefHeight="364.0" prefWidth="622.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #DDD;" BorderPane.alignment="CENTER">
          <items>
@@ -38,6 +38,11 @@
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                  </VBox.margin>
              </Button>
+            <Button fx:id="add" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Adcionar Participante" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
          </children>
       </VBox>
    </right>
@@ -51,6 +56,7 @@
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.0" minWidth="10.0" prefWidth="186.0" />
             <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="112.0" minWidth="10.0" prefWidth="69.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="176.0" minWidth="10.0" prefWidth="164.0" />
+            <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,6 +64,11 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
         </rowConstraints>
          <children>
             <Label text="Data:" />
@@ -73,6 +84,11 @@
             <ComboBox fx:id="tipo" prefHeight="25.0" prefWidth="193.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <ComboBox fx:id="local" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
             <CheckBox fx:id="completada" mnemonicParsing="false" text="Completada" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TableView fx:id="participantes" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="5" GridPane.rowSpan="5">
+              <columns>
+                <TableColumn text="Participantes" />
+              </columns>
+            </TableView>
          </children>
       </GridPane>
    </center>
