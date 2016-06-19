@@ -7,10 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.List;
 
 
 @FXMLController(value = "atleta-details.fxml", title = "Atleta")
@@ -34,9 +35,10 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     TextField peso;
 
     @FXML
-    TextField genero;
+    ComboBox<String> genero;
 
-    // TODO: Image picker
+    @FXML
+    ImageView image;
 
     @FXML
     TextField foto;
@@ -44,9 +46,8 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     @Override
     @PostConstruct
     public void init() throws IllegalAccessException, InstantiationException {
-        List<Delegacao> delegacoes = data.select(Delegacao.class);
-        delegacao.getItems().addAll(delegacoes);
-        delegacao.setValue(delegacao.getItems().get(0));
+        delegacao.getItems().setAll(data.select(Delegacao.class));
+        genero.getItems().setAll("MASCULINO","FEMININO");
         super.init();
     }
 
@@ -57,7 +58,7 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
         LocalDate dataNascimentoValue = dataNascimento.getValue();
 
         model.setNome(nome.getText());
-        model.setGenero(genero.getText());
+        model.setGenero(genero.getSelectionModel().getSelectedItem());
         model.setAltura(alturaValue);
         model.setPeso(pesoValue);
         model.setDataNascimento(java.sql.Date.valueOf(dataNascimentoValue));
@@ -73,12 +74,13 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
         LocalDate dataNascimentoValue = model.getDataNascimento().toLocalDate();
 
         nome.setText(model.getNome());
-        genero.setText(model.getGenero());
+        selectInCombo(genero, s -> s.equals(model.getGenero()));
         altura.setText(alturaText);
         peso.setText(pesoText);
         dataNascimento.setValue(dataNascimentoValue);
-        delegacao.setValue(delegacao.getConverter().fromString(model.getDelegacao()));
+        selectInCombo(delegacao, d -> d.getNome().equals(model.getDelegacao()));
         foto.setText(model.getFoto());
+        image.setImage(new Image(foto.getText()));
     }
 
     @Override

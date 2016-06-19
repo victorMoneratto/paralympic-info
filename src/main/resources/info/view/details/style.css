@@ -5,3 +5,14 @@
 .control:readonly {
     -fx-background-color: #CCC;
 }
+
+.label:disabled {
+    -fx-opacity: 1.0;
+}
+
+#image {
+    -fx-border-color: darkblue;
+    -fx-border-insets: 3;
+    -fx-border-radius: 7;
+    -fx-border-width: 10.0;
+}

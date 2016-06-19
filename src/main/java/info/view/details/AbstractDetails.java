@@ -70,7 +70,9 @@ public abstract class AbstractDetails<T> extends SimpleView {
     }
 
     public void onInit() {
-        modelToForm();
+        if (!insertingNew) {
+            modelToForm();
+        }
     }
 
     protected void setFormEnabled(boolean enabled) {
