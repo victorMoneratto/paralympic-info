@@ -46,10 +46,10 @@ public class ParticipantePartidaDetails extends AbstractDetails<Participante_Par
     public void formToModel() {
         switch (info.type) {
             case Atleta:
-                model.setParticipante(((Atleta)participante.getSelectionModel().getSelectedItem()).getIdentificador());
+                model.setAtleta(((Atleta)participante.getSelectionModel().getSelectedItem()).getIdentificador());
                 break;
             case Time:
-                model.setParticipante(((Time)participante.getSelectionModel().getSelectedItem()).getIdentificador());
+                model.setTime(((Time)participante.getSelectionModel().getSelectedItem()).getIdentificador());
                 break;
         }
         model.setPontuacao(Double.parseDouble(pontuacao.getText()));
@@ -60,10 +60,10 @@ public class ParticipantePartidaDetails extends AbstractDetails<Participante_Par
     public void modelToForm() {
         switch (info.type) {
             case Atleta:
-                selectInCombo(participante, s -> ((Atleta)s).getIdentificador().equals(model.getParticipante()));
+                selectInCombo(participante, s -> ((Atleta)s).getIdentificador().equals(model.getAtleta()));
                 break;
             case Time:
-                selectInCombo(participante, s -> ((Time)s).getIdentificador().equals(model.getParticipante()));
+                selectInCombo(participante, s -> ((Time)s).getIdentificador().equals(model.getTime()));
                 break;
         }
         pontuacao.setText(model.getPontuacao().toString());

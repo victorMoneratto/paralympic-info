@@ -230,7 +230,6 @@ CREATE OR REPLACE VIEW Participante_Partida AS
   FROM Time_Partida JOIN TimeOlimpico
   ON Time_Partida.TimeOlimp = TimeOlimpico.Identificador;
 
-
 ---------------------------- TRIGGERS ----------------------------
 -- *********************************************************
 -- Atleta participa de uma modalidade de genero compativel
