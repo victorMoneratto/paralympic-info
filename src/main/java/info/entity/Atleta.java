@@ -3,12 +3,14 @@ package info.entity;
 import io.datafx.crud.table.ViewColumn;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
 public class Atleta {
     @Id
     @ViewColumn("ID")
+    @GeneratedValue
     public Integer identificador;
 
     @ViewColumn("Nome")

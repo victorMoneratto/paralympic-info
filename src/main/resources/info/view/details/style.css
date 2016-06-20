@@ -1,18 +1,22 @@
-.control:disabled {
-    -fx-opacity: 0.8;
-}
+/*.control:disabled {*/
+    /*-fx-opacity: 1.0;*/
+/*}*/
 
-.control:readonly {
-    -fx-background-color: #CCC;
-}
+/*.control:readonly {*/
+    /*-fx-background-color: #CCC;*/
+/*}*/
 
-.label:disabled {
-    -fx-opacity: 1.0;
-}
+/*.label:disabled {*/
+    /*-fx-opacity: 1.0;*/
+/*}*/
 
-#image {
-    -fx-border-color: darkblue;
-    -fx-border-insets: 3;
-    -fx-border-radius: 7;
-    -fx-border-width: 10.0;
+/*#image {*/
+    /*-fx-border-color: darkblue;*/
+    /*-fx-border-insets: 3;*/
+    /*-fx-border-radius: 7;*/
+    /*-fx-border-width: 10.0;*/
+/*}*/
+
+.text-field .combo-box {
+    -fx-background-color: red;
 }

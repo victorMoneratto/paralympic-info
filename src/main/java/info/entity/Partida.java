@@ -3,6 +3,7 @@ package info.entity;
 import io.datafx.crud.table.ViewColumn;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 public class Partida {
     @Id
     @ViewColumn("ID")
+    @GeneratedValue
     public Integer identificador;
 
     @ViewColumn("Data/Hora")

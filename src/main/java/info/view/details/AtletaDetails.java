@@ -18,41 +18,39 @@ import java.time.LocalDate;
 public class AtletaDetails extends AbstractDetails<Atleta> {
 
     @FXML
-    TextField nome;
+    public TextField nome;
 
     @FXML
-    ComboBox<Delegacao> delegacao;
+    public ComboBox<Delegacao> delegacao;
 
     @FXML
-    DatePicker dataNascimento;
-
-    // TODO: Check float and double attributes
+    public DatePicker dataNascimento;
 
     @FXML
-    TextField altura;
+    public TextField altura;
 
     @FXML
-    TextField peso;
+    public TextField peso;
 
     @FXML
-    ComboBox<String> genero;
+    public ComboBox<String> genero;
 
     @FXML
-    ImageView image;
+    public ImageView image;
 
     @FXML
-    TextField foto;
+    public TextField foto;
 
     @Override
-    @PostConstruct
-    public void init() throws IllegalAccessException, InstantiationException {
+    public void onInit(){
         delegacao.getItems().setAll(data.select(Delegacao.class));
         genero.getItems().setAll("MASCULINO","FEMININO");
-        super.init();
+        super.onInit();
     }
 
     @Override
     public void formToModel() {
+        // TODO Parse error handling
         double alturaValue = Double.parseDouble(altura.getText());
         double pesoValue = Double.parseDouble(peso.getText());
         LocalDate dataNascimentoValue = dataNascimento.getValue();
@@ -62,15 +60,14 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
         model.setAltura(alturaValue);
         model.setPeso(pesoValue);
         model.setDataNascimento(java.sql.Date.valueOf(dataNascimentoValue));
-        model.setDelegacao(delegacao.getValue().toString());
+        model.setDelegacao(delegacao.getSelectionModel().getSelectedItem().getNome());
         model.setFoto(foto.getText());
     }
 
     @Override
     public void modelToForm() {
-        final String doubleFormat = "%.2f";
-        String alturaText = String.format(doubleFormat, model.getAltura());
-        String pesoText = String.format(doubleFormat, model.getPeso());
+        String alturaText = model.getAltura().toString();
+        String pesoText = model.getPeso().toString();
         LocalDate dataNascimentoValue = model.getDataNascimento().toLocalDate();
 
         nome.setText(model.getNome());
@@ -86,5 +83,10 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     @Override
     protected Class<Atleta> getModelClass() {
         return Atleta.class;
+    }
+
+    @FXML
+    void loadPhoto() {
+        image.setImage(new Image(foto.getText()));
     }
 }

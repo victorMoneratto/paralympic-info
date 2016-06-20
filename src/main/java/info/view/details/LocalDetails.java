@@ -15,6 +15,15 @@ public class LocalDetails extends AbstractDetails<Local> {
     TextField endereco;
 
     @Override
+    public void onInit() {
+        nome.setEditable(insertingNew);
+
+        super.onInit();
+    }
+
+
+
+    @Override
     public void formToModel() {
         model.setNome(nome.getText());
         model.setEndereco(endereco.getText());

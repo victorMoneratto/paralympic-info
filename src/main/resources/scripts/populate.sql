@@ -15,7 +15,7 @@ INSERT INTO MODALIDADE VALUES ('TENIS EM CADEIRA DE RODAS MASCULINO INDIVIDUAL',
 INSERT INTO MODALIDADE VALUES ('ESGRIMA EM CADEIRA DE RODAS MASCULINO', 'MASCULINO', 'PONTOS',
                                'A esgrima em cadeira de rodas foi apresentada nos Jogos de Stoke Mandeville, em 1954, por Sir Ludwig Guttmann, e fez parte de todos os Jogos Paralímpicos desde primeira edição, disputada no ano de 1960 em Roma.',
                                'Individual');
-INSERT INTO MODALIDADE VALUES ('HIPISMO', 'MISTO', 'PONTOS',
+INSERT INTO MODALIDADE VALUES ('HIPISMO', 'FEMININO', 'PONTOS',
                                ' Os esportes equestres foram usados originalmente para reabilitação e recreação de pessoas com deficiência e hoje é amplamente usado em jogos paralimpicos.',
                                'Time');
 INSERT INTO MODALIDADE VALUES ('TENIS EM CADEIRA DE RODAS MISTO TIME', 'MISTO', 'PONTOS',
@@ -48,40 +48,45 @@ INSERT INTO PAIS VALUES ('Estados Unidos da América', 'EUA', 'us', 'UNITED STAT
 INSERT INTO PAIS VALUES ('Suíça', 'SUI', 'ch', 'SWISS OLYMPIC ASSOCIATION');
 INSERT INTO PAIS VALUES ('Holanda', 'HOL', 'nl', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE');
 
-INSERT INTO ARBITRO VALUES (1, 'Paulo Augusto', 'Brasil');
-INSERT INTO ARBITRO VALUES (2, 'Marcos Netto', 'Brasil');
-INSERT INTO ARBITRO VALUES (3, 'Noah James', 'Estados Unidos da América');
-INSERT INTO ARBITRO VALUES (4, 'Enzo Agarelli', 'Itália');
-INSERT INTO ARBITRO VALUES (5, 'Apollon Beaumont', 'França');
+INSERT INTO ARBITRO (nome, pais) VALUES ('Paulo Augusto', 'Brasil');
+INSERT INTO ARBITRO (nome, pais) VALUES ('Marcos Netto', 'Brasil');
+INSERT INTO ARBITRO (nome, pais) VALUES ('Noah James', 'Estados Unidos da América');
+INSERT INTO ARBITRO (nome, pais) VALUES ('Enzo Agarelli', 'Itália');
+INSERT INTO ARBITRO (nome, pais) VALUES ('Apollon Beaumont', 'França');
 
-INSERT INTO ATLETA VALUES
-  (1, 'Esther Vergeer', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE', to_date('18/06/1981', 'dd/mm/yyyy'),
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES
+  ('Esther Vergeer', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE', to_date('18/06/1981', 'dd/mm/yyyy'),
    1.76, 72.3, 'FEMININO', 'https://goo.gl/qhWMvd'); -- TENIS
-INSERT INTO ATLETA VALUES (5, 'Chantal Vadierendonck', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
-                           to_date('31/01/1965', 'dd/mm/yyyy'), 1.75, 80.3, 'FEMININO',
-                           'http://goo.gl/bgT3Ql'); -- TENIS
-INSERT INTO ATLETA VALUES
-  (6, 'Beth Arnoult', 'UNITED STATES OLYMPIC COMMITTEE', to_date('31/07/1985', 'dd/mm/yyyy'), 1.65, 60.3, 'FEMININO',
-   'http://goo.gl/vJxNg0'); --tenis
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('David Wagner', 'UNITED STATES OLYMPIC COMMITTEE', to_date('04/03/1974', 'dd/mm/yyyy'), 1.83, 80.3, 'MASCULINO',
+        'https://goo.gl/InEfIk'); -- tenis
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Heinz Frei', 'SWISS OLYMPIC ASSOCIATION', to_date('28/01/1958', 'dd/mm/yyyy'), 1.83, 80.3, 'MASCULINO',
+        'http://goo.gl/s1S0MO'); -- atletismo
 
-INSERT INTO ATLETA VALUES
-  (9, 'Lee Pearson', 'SWISS OLYMPIC ASSOCIATION', to_date('11/07/1967', 'dd/mm/yyyy'), 1.85, 80.3, 'MASCULINO',
-   'http://goo.gl/oDUCvq'); -- hipismo
-INSERT INTO ATLETA VALUES (8, 'Robin Ammerlaan', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
-                           to_date('26/02/1968', 'dd/mm/yyyy'), 1.76, 72.3, 'MASCULINO',
-                           'http://goo.gl/R6vpwz'); -- TENIS
-INSERT INTO ATLETA VALUES
-  (7, 'Paul Moran', 'UNITED STATES OLYMPIC COMMITTEE', to_date('31/12/1966', 'dd/mm/yyyy'), 1.87, 80.3, 'MASCULINO',
-   'http://goo.gl/xbNHF1'); -- tenis
-INSERT INTO ATLETA VALUES
-  (2, 'David Wagner', 'UNITED STATES OLYMPIC COMMITTEE', to_date('04/03/1974', 'dd/mm/yyyy'), 1.83, 80.3, 'MASCULINO',
-   'https://goo.gl/InEfIk'); -- tenis
-INSERT INTO ATLETA VALUES
-  (3, 'Heinz Frei', 'SWISS OLYMPIC ASSOCIATION', to_date('28/01/1958', 'dd/mm/yyyy'), 1.83, 80.3, 'MASCULINO',
-   'http://goo.gl/s1S0MO'); -- atletismo
-INSERT INTO ATLETA VALUES
-  (4, 'Joop Stokkel', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE', to_date('11/04/1967', 'dd/mm/yyyy'),
-   1.75, 80.3, 'MASCULINO', 'http://goo.gl/bgT3Ql'); -- hipismo
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Joop Stokkel', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE', to_date('11/04/1967', 'dd/mm/yyyy'),
+        1.75, 80.3, 'MASCULINO', 'http://goo.gl/bgT3Ql'); -- hipismo
+
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Chantal Vadierendonck', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
+        to_date('31/01/1965', 'dd/mm/yyyy'), 1.75, 80.3, 'FEMININO',
+        'http://goo.gl/bgT3Ql'); -- TENIS
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Beth Arnoult', 'UNITED STATES OLYMPIC COMMITTEE', to_date('31/07/1985', 'dd/mm/yyyy'), 1.65, 60.3, 'FEMININO',
+        'http://goo.gl/vJxNg0'); --tenis
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Paul Moran', 'UNITED STATES OLYMPIC COMMITTEE', to_date('31/12/1966', 'dd/mm/yyyy'), 1.87, 80.3, 'MASCULINO',
+        'http://goo.gl/xbNHF1'); -- tenis
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Robin Ammerlaan', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
+        to_date('26/02/1968', 'dd/mm/yyyy'), 1.76, 72.3, 'MASCULINO',
+        'http://goo.gl/R6vpwz'); -- TENIS
+INSERT INTO ATLETA (nome, delegacao, datanascimento, altura, peso, genero, foto)
+VALUES ('Lee Pearson', 'SWISS OLYMPIC ASSOCIATION', to_date('11/07/1967', 'dd/mm/yyyy'), 1.85, 80.3, 'MASCULINO',
+        'http://goo.gl/oDUCvq'); -- hipismo
+
 
 INSERT INTO ATLETA_MODALIDADE VALUES (5, 'TENIS EM CADEIRA DE RODAS FEMININO INDIVIDUAL', 'D', 'OURO');
 INSERT INTO ATLETA_MODALIDADE VALUES (1, 'TENIS EM CADEIRA DE RODAS FEMININO INDIVIDUAL', 'C', 'PRATA');
@@ -89,36 +94,39 @@ INSERT INTO ATLETA_MODALIDADE VALUES (6, 'TENIS EM CADEIRA DE RODAS FEMININO IND
 INSERT INTO ATLETA_MODALIDADE VALUES (8, 'TENIS EM CADEIRA DE RODAS MASCULINO INDIVIDUAL', 'D', NULL);
 INSERT INTO ATLETA_MODALIDADE VALUES (2, 'TENIS EM CADEIRA DE RODAS MASCULINO INDIVIDUAL', 'C', NULL);
 INSERT INTO ATLETA_MODALIDADE VALUES (3, 'ATLETISMO MASCULINO', '11', NULL);
-INSERT INTO ATLETA_MODALIDADE VALUES (4, 'HIPISMO', 'Classe IV', NULL);
+INSERT INTO ATLETA_MODALIDADE VALUES (4, 'ESGRIMA EM CADEIRA DE RODAS MASCULINO', 'Classe IV', NULL);
 
-INSERT INTO TIMEOLIMPICO VALUES
-  (1, 'TENIS EM CADEIRA DE RODAS MISTO EUA', 'UNITED STATES OLYMPIC COMMITTEE', 'TENIS EM CADEIRA DE RODAS MISTO TIME',
+INSERT INTO TIMEOLIMPICO (nome, delegacao, modalidade, categoria, genero, medalhaganha, graudecomprometimento)
+VALUES
+  ('TENIS EM CADEIRA DE RODAS MISTO EUA', 'UNITED STATES OLYMPIC COMMITTEE', 'TENIS EM CADEIRA DE RODAS MISTO TIME',
    'D', 'MISTO', NULL, '3E');
-INSERT INTO TIMEOLIMPICO VALUES
-  (2, 'TENIS EM CADEIRA DE RODAS MISTO HOL', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
-   'TENIS EM CADEIRA DE RODAS MISTO TIME', 'D', 'MISTO', NULL, '3E');
-INSERT INTO TIMEOLIMPICO
-VALUES (3, 'ATLETISMO FEMININO SUI', 'SWISS OLYMPIC ASSOCIATION', 'ATLETISMO FEMININO', 'D', 'FEMININO', NULL, '3D');
+INSERT INTO TIMEOLIMPICO (nome, delegacao, modalidade, categoria, genero, medalhaganha, graudecomprometimento)
+VALUES ('TENIS EM CADEIRA DE RODAS MISTO HOL', 'NEDERLANDS OLYMPISCH COMITÉ* NEDERLANDSE SPORT FEDERATIE',
+        'TENIS EM CADEIRA DE RODAS MISTO TIME', 'D', 'MISTO', NULL, '3E');
+INSERT INTO TIMEOLIMPICO (nome, delegacao, modalidade, categoria, genero, medalhaganha, graudecomprometimento)
+VALUES ('ATLETISMO FEMININO SUI', 'SWISS OLYMPIC ASSOCIATION', 'HIPISMO', 'D', 'FEMININO', NULL, '3D');
 
 INSERT INTO ATLETA_TIME VALUES (6, 1);
 INSERT INTO ATLETA_TIME VALUES (7, 1);
 INSERT INTO ATLETA_TIME VALUES (5, 2);
 INSERT INTO ATLETA_TIME VALUES (8, 2);
 
-INSERT INTO PARTIDA VALUES
-  (1, to_timestamp('10/06/2016 16:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE HIPISMO', TRUE, NULL, 'INDIVIDUAL',
-   'HIPISMO');
-INSERT INTO PARTIDA VALUES
-  (2, to_timestamp('12/06/2016 17:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE TÊNIS – PARQUE OLÍMPICO DA BARRA', TRUE,
-   NULL, 'INDIVIDUAL', 'TENIS EM CADEIRA DE RODAS MASCULINO INDIVIDUAL');
-INSERT INTO PARTIDA VALUES
-  (3, to_timestamp('12/06/2016 19:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE TÊNIS – PARQUE OLÍMPICO DA BARRA', FALSE,
-   NULL, 'TIME', 'TENIS EM CADEIRA DE RODAS MISTO TIME');
+INSERT INTO PARTIDA (datahora, nomelocal, completada, observacao, modalidade) VALUES
+  (to_timestamp('10/06/2016 16:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE HIPISMO', TRUE, NULL, 'HIPISMO');
+INSERT INTO PARTIDA (datahora, nomelocal, completada, observacao, modalidade) VALUES
+  (to_timestamp('12/06/2016 17:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE TÊNIS – PARQUE OLÍMPICO DA BARRA', TRUE,
+   NULL, 'TENIS EM CADEIRA DE RODAS MASCULINO INDIVIDUAL');
+INSERT INTO PARTIDA (datahora, nomelocal, completada, observacao, modalidade) VALUES
+  (to_timestamp('12/06/2016 19:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE TÊNIS – PARQUE OLÍMPICO DA BARRA', FALSE,
+   NULL, 'TENIS EM CADEIRA DE RODAS MISTO TIME');
+INSERT INTO PARTIDA (datahora, nomelocal, completada, observacao, modalidade) VALUES
+  (to_timestamp('20/07/2016 08:00', 'dd/mm/yyyy hh24:mi'), 'CENTRO OLÍMPICO DE TÊNIS – PARQUE OLÍMPICO DA BARRA', FALSE,
+   NULL, 'TENIS EM CADEIRA DE RODAS FEMININO INDIVIDUAL');
 
-INSERT INTO ATLETA_PARTIDA VALUES (1, 4, 2, 35);
-INSERT INTO ATLETA_PARTIDA VALUES (1, 9, 1, 45);
-INSERT INTO ATLETA_PARTIDA VALUES (2, 8, 1, 30);
-INSERT INTO ATLETA_PARTIDA VALUES (2, 2, 2, 20);
+INSERT INTO ATLETA_PARTIDA(partida, atleta, classificacao, pontuacao) VALUES (2, 8, 1, 30);
+INSERT INTO ATLETA_PARTIDA(partida, atleta, classificacao, pontuacao) VALUES (2, 2, 2, 20);
+INSERT INTO ATLETA_PARTIDA(partida, atleta, classificacao, pontuacao) VALUES (4, 5, 1, 45);
+INSERT INTO ATLETA_PARTIDA(partida, atleta, classificacao, pontuacao) VALUES (4, 1, 2, 15);
 
 INSERT INTO ARBITRO_PARTIDA VALUES (1, 1);
 INSERT INTO ARBITRO_PARTIDA VALUES (1, 3);
@@ -128,8 +136,9 @@ INSERT INTO ARBITRO_PARTIDA VALUES (2, 5);
 INSERT INTO ARBITRO_PARTIDA VALUES (3, 1);
 INSERT INTO ARBITRO_PARTIDA VALUES (3, 4);
 
-INSERT INTO TIME_PARTIDA VALUES (3, 2, 1, 25);
-INSERT INTO TIME_PARTIDA VALUES (3, 1, 2, 15);
+INSERT INTO TIME_PARTIDA(partida, timeolimp, classificacao, pontuacao) VALUES (1, 3, 1, 50);
+INSERT INTO TIME_PARTIDA(partida, timeolimp, classificacao, pontuacao) VALUES (3, 2, 1, 25);
+INSERT INTO TIME_PARTIDA(partida, timeolimp, classificacao, pontuacao) VALUES (3, 1, 2, 15);
 
 -- INSERTS DE TESTE PARA OS TRIGGERS --
 
