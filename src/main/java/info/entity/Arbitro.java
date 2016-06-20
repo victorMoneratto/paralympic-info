@@ -9,6 +9,7 @@ public class Arbitro {
     @Id
     @Column
     @ViewColumn("ID")
+    @GeneratedValue
     public Integer identificador;
 
     @Column

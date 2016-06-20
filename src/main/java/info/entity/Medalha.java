@@ -3,6 +3,7 @@ package info.entity;
 import io.datafx.crud.table.ViewColumn;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -10,6 +11,7 @@ public class Medalha {
 
     @Id
     @ViewColumn("ID")
+    @GeneratedValue
     public String uuid;
 
     @ViewColumn("Time")

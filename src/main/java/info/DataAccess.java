@@ -36,86 +36,109 @@ public class DataAccess {
     }
 
     /***
-     * Selects all tuples from table
+     * <code>select</code> builds, executes and a SELECT query
+     *
+     * @param table     Table or view name
+     * @param clazz     Class of the return object
+     * @param condition Where condition for query
+     * @return List of type T with selected the tuples
      */
-    public <T> List<T> select(String table, Class<T> clazz, String where) {
+    public <T> List<T> select(String table, Class<T> clazz, String condition) {
         StringBuilder sb = new StringBuilder();
+
+        // start with "SELECT * FROM $table$"
         sb.append("SELECT * FROM ").append(table);
-        if(where != null && !where.isEmpty()) {
-            sb.append(" WHERE ").append(where);
+
+        // if we have a WHERE condition, append it last
+        if (condition != null && !condition.isEmpty()) {
+            sb.append(" WHERE ").append(condition);
         }
 
+        // The generated SQL should be of type:
+        // SELECT FROM $table$ <WHERE $cond$>
         String sql = sb.toString();
         Query query = createNativeSelect(sql, clazz);
 
-        // Since we're selecting from a single table, it should be safe to
-        // cast the resulting list to the generic form.
+        // Run query and build result objects
         @SuppressWarnings({"unchecked"})
         List<T> list = query.getResultList();
         return list;
     }
 
     /**
-     * Builds and executes a DELETE query.
-     * The WHERE condition is built to match the primary key, so only this object is changed.
+     * <code>makeDelete</code> builds and executes a DELETE query.
+     * The WHERE condition is built to match the primary key of
+     * the given object, so only this one is changed.
+     *
+     * @param entity The object to delete
+     * @param table  Table or view name
+     * @param clazz  Class of the object to delete
+     * @return Object to execute the delete query
      */
     public <T> Query makeDelete(T entity, String table, Class<T> clazz) {
         StringBuilder sb = new StringBuilder();
+
+        // Start with "DELETE FROM $table$"
         sb.append("DELETE FROM ").append(table);
 
         // Find the primary key columns and their values
         List<Entry<String, Object>> columns = whereForPK(entity, clazz);
         if (columns.isEmpty()) {
-            // We wont makeDelete all tuples if no condition was found, just fail
+            // We wont delete all tuples if no condition was found,
+            // just return null
             return null;
         }
 
         buildWhere(sb, columns);
 
         // The generated SQL should be of type:
-        // DELETE FROM table WHERE pk1 = ? AND pk2 = ?
+        // DELETE FROM $table$ WHERE $pk1$ = ? <AND $pk2$ = ?>
         String sql = sb.toString();
         Query query = createNativeUpdate(sql);
 
-        // Set the parameters values for query
-        int counter = 1;
+        // Set the parameters values for the where clauses
+        int param = 1;
         for (Entry<String, Object> entry : columns) {
-            query.setParameter(counter, entry.getValue());
-            counter++;
+            query.setParameter(param, entry.getValue());
+            param++;
         }
 
+        // return the built query
         return query;
     }
 
-    private void buildWhere(StringBuilder sb, List<Entry<String, Object>> columns) {
-        boolean firstClause = true;
-        for (Entry<String, Object> entry : columns) {
-            if (firstClause) {
-                sb.append(" WHERE ");
-                firstClause = false;
-            } else {
-                sb.append(" AND ");
-            }
-
-            sb.append(entry.getKey());
-            sb.append(" = ?");
-        }
-    }
-
+    /**
+     * <code>makeUpdate</code> builds and executes a UPDATE query.
+     * The WHERE condition is built to match the primary key of
+     * the given object, so only this one is changed.
+     *
+     * @param entity The object to update
+     * @param table  Table or view name
+     * @param clazz  Class of the object to update
+     * @return Object to execute the update query
+     */
     private <T> Query makeUpdate(T entity, String table, Class<T> clazz) {
         StringBuilder sb = new StringBuilder();
+
+        // Start with "UPDATE $table$"
         sb.append("UPDATE ").append(table);
 
+        // Find the primary key columns and their values
         List<Entry<String, Object>> whereColumns = whereForPK(entity, clazz);
 
-        // eclipselink doesn't support update on primary keys, filter them for now
+        // Find all columns and their values to change
         List<Entry<String, Object>> dataColumns =
+                // NOTE: eclipselink doesn't support update on primary keys :(
+                // we have to filter them from the changed data
                 getFields(entity, clazz, field -> field.getAnnotation(Id.class) == null);
 
         if (whereColumns.isEmpty() || dataColumns.isEmpty()) {
+            // We wont update all tuples if no condition was found,
+            // just return null
             return null;
         }
 
+        // Build the SET $column1$ = ? <, $column2$ = ?>
         boolean firstColumn = true;
         for (Entry<String, Object> column : dataColumns) {
             if (firstColumn) {
@@ -128,15 +151,24 @@ public class DataAccess {
                     .append(" = ?");
         }
 
+        // Build the where condition
         buildWhere(sb, whereColumns);
 
+        // The built sql should be of type:
+        // "UPDATE $table$
+        // SET $column1$=? <,$column2$=?>
+        // WHERE $pk1$= ? <AND $pk$=?>"
         String sql = sb.toString();
         Query query = createNativeUpdate(sql);
+
+        // Set values for the "SET col=?" parameters
         int param = 1;
         for (Entry<String, Object> dataColumn : dataColumns) {
             query.setParameter(param, dataColumn.getValue());
             param++;
         }
+
+        // Set values for the "WHERE col=?" parameters
         for (Entry<String, Object> whereColumn : whereColumns) {
             query.setParameter(param, whereColumn.getValue());
             param++;
@@ -147,14 +179,20 @@ public class DataAccess {
 
     private <T> Query makeInsert(T entity, String table, Class<T> clazz) {
         StringBuilder sb = new StringBuilder();
+
+        // Start with "INSERT INTO $table"
         sb.append("INSERT INTO ").append(table);
 
-        List<Entry<String, Object>> columns = getFields(entity, clazz);
+        // Find all columns and their values to insert
+        List<Entry<String, Object>> columns = getFields(entity, clazz,
+                // If the column is auto-generated, we shouldn't pass it explicit data
+                field -> field.getAnnotation(GeneratedValue.class) == null);
         if (columns.isEmpty()) {
-            // If we got no column, there's nothing to makeInsert
+            // If we got no column, there's nothing to insert
             return null;
         }
 
+        // Build the "($column1$ <,$column2$>) VALUES"
         boolean firstColumn = true;
         for (Entry<String, Object> column : columns) {
             if (firstColumn) {
@@ -167,6 +205,7 @@ public class DataAccess {
         }
         sb.append(") VALUES ");
 
+        // Build the "(? <, ?>)"
         for (int i = 0; i < columns.size(); i++) {
             if (i == 0) {
                 sb.append("(?");
@@ -176,11 +215,13 @@ public class DataAccess {
         }
         sb.append(")");
 
-        // build makeInsert query
+        // The built sql should be of type:
+        // "INSERT INTO $table$($column1$ <, $column2$>)
+        // VALUES (? <, ?>)"
         String sql = sb.toString();
         Query query = createNativeUpdate(sql);
 
-        // set value for column parameters
+        // Set values for the "(? <, ?>)" parameters
         for (int i = 0; i < columns.size(); i++) {
             query.setParameter(i + 1, columns.get(i).getValue());
         }
@@ -222,6 +263,24 @@ public class DataAccess {
 
     public <T> List<Entry<String, Object>> whereForPK(T entity, Class<T> clazz) {
         return getFields(entity, clazz, field -> field.getAnnotation(Id.class) != null);
+    }
+
+    /**
+     * Build where condition for "column = value" case
+     */
+    private void buildWhere(StringBuilder sb, List<Entry<String, Object>> columns) {
+        boolean firstClause = true;
+        for (Entry<String, Object> entry : columns) {
+            if (firstClause) {
+                sb.append(" WHERE ");
+                firstClause = false;
+            } else {
+                sb.append(" AND ");
+            }
+
+            sb.append(entry.getKey());
+            sb.append(" = ?");
+        }
     }
 
     private String fieldNameFor(Field field) {

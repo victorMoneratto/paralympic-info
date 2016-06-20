@@ -76,11 +76,7 @@ public abstract class AbstractDetails<T> extends SimpleView {
     }
 
     protected void setFormEnabled(boolean enabled) {
-        form.getChildren().forEach(node -> {
-            if (!(node instanceof Label)) {
-                node.setDisable(!enabled);
-            }
-        });
+        form.getChildren().forEach(node -> node.setDisable(!enabled));
         save.setDisable(!enabled);
         edit.setDisable(enabled);
     }

@@ -61,7 +61,7 @@
             </rowConstraints>
             <children>
                 <TextField fx:id="nome" promptText="Nome" GridPane.columnIndex="2" GridPane.columnSpan="3" />
-                <TextField fx:id="foto" promptText="Foto" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                <TextField fx:id="foto" onAction="#loadPhoto" promptText="Foto" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                 <Label text="Foto:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                 <Label text="Delegação:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                 <Label text="Nome:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
@@ -76,7 +76,7 @@
                 <Label text="Nascimento:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <Pane style="-fx-background-color: #CCC;" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2147483647" GridPane.vgrow="ALWAYS">
                <children>
-                  <ImageView fx:id="image" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image" fitHeight="512.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <GridPane.margin>
                   <Insets />
@@ -88,4 +88,7 @@
          </padding>
         </GridPane>
     </center>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
 </BorderPane>
