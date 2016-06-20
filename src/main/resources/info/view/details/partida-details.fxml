@@ -92,4 +92,7 @@
          </children>
       </GridPane>
    </center>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
 </BorderPane>

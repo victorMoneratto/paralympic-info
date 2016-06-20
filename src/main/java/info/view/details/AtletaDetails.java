@@ -85,4 +85,9 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
     protected Class<Atleta> getModelClass() {
         return Atleta.class;
     }
+
+    @FXML
+    void loadPhoto() {
+        image.setImage(new Image(foto.getText()));
+    }
 }

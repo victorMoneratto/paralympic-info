@@ -43,7 +43,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TextField fx:id="nome" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
+                <TextField fx:id="nome" focusTraversable="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
                 <Label alignment="CENTER_RIGHT" text="Nome:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
                 <TextField fx:id="endereco" layoutX="120.0" layoutY="27.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="32.0" text="Endereço:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />

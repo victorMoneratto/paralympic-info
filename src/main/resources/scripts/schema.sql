@@ -110,7 +110,8 @@ CREATE TABLE Atleta_Partida (
 
   CONSTRAINT PK_AtlPart PRIMARY KEY (Partida, Atleta),
   CONSTRAINT FK_AtlPart1 FOREIGN KEY (Partida) REFERENCES Partida (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT FK_AtlPart2 FOREIGN KEY (Atleta) REFERENCES Atleta (Identificador) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT FK_AtlPart2 FOREIGN KEY (Atleta) REFERENCES Atleta (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT UN_TimePart UNIQUE (PARTIDA, CLASSIFICACAO)
 );
 
 CREATE TABLE TimeOlimpico (
@@ -139,7 +140,8 @@ CREATE TABLE Time_Partida (
   Pontuacao     FLOAT,
   CONSTRAINT PK_TimePart PRIMARY KEY (Partida, TimeOlimp),
   CONSTRAINT FK_TimePart1 FOREIGN KEY (Partida) REFERENCES Partida (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT FK_TimePart2 FOREIGN KEY (TimeOlimp) REFERENCES TimeOlimpico (Identificador) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT FK_TimePart2 FOREIGN KEY (TimeOlimp) REFERENCES TimeOlimpico (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT UN_TimePart UNIQUE (PARTIDA, CLASSIFICACAO)
 );
 
 
@@ -172,28 +174,26 @@ CREATE EXTENSION "uuid-ossp";
 CREATE OR REPLACE VIEW Medalha AS
   SELECT
     uuid_generate_v4() AS uuid,
-    T.*
-  FROM (SELECT
-          NULL         AS Time,
-          Atleta,
-          Nome,
-          Modalidade,
-          MedalhaGanha AS Medalha
-        FROM Atleta_Modalidade
-          JOIN Atleta ON Atleta = Identificador
-        WHERE MedalhaGanha IS NOT NULL
+    NULL               AS Time,
+    Atleta,
+    Nome,
+    Modalidade,
+    MedalhaGanha       AS Medalha
+  FROM Atleta_Modalidade
+    JOIN Atleta ON Atleta = Identificador
+  WHERE MedalhaGanha IS NOT NULL
 
-        UNION
+  UNION
 
-        SELECT
-          Identificador AS Time,
-          NULL          AS Atleta,
-          Nome,
-          Modalidade,
-          MedalhaGanha  AS Medalha
-        FROM TimeOlimpico
-        WHERE MedalhaGanha IS NOT NULL) T;
-
+  SELECT
+    uuid_generate_v4() AS uuid,
+    Identificador      AS Time,
+    NULL               AS Atleta,
+    Nome,
+    Modalidade,
+    MedalhaGanha       AS Medalha
+  FROM TimeOlimpico
+  WHERE MedalhaGanha IS NOT NULL;
 
 CREATE OR REPLACE VIEW Atleta_Time_Info AS
   SELECT
@@ -204,6 +204,16 @@ CREATE OR REPLACE VIEW Atleta_Time_Info AS
   FROM Atleta_Time
     JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
     JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador;
+
+-- CREATE OR REPLACE VIEW Participante_Partida AS
+--   SELECT
+--   FROM Atleta_Partida
+--
+--   UNION
+--
+--   SELECT *
+--   FROM Time_Partida;
+
 
 ---------------------------- TRIGGERS ----------------------------
 -- *********************************************************
@@ -346,7 +356,7 @@ DECLARE
   ATLETA_DELEGACAO VARCHAR(120);
   TIME_DELEGACAO   VARCHAR(120);
   ATLETA_GENERO    VARCHAR(9);
-  TIME_GENERO    VARCHAR(9);
+  TIME_GENERO      VARCHAR(9);
 BEGIN
   ATLETA_DELEGACAO = (SELECT Delegacao
                       FROM Atleta
@@ -359,14 +369,16 @@ BEGIN
     RAISE EXCEPTION 'O atleta não pertence à mesma delegação do time';
   END IF;
 
-  TIME_GENERO= (SELECT Genero
-                    FROM TimeOlimpico AS T
-                    WHERE T.Identificador = NEW.TIMEOLIMP);
-  IF UPPER(TIME_GENERO) <> 'MISTO' THEN
+  TIME_GENERO = (SELECT Genero
+                 FROM TimeOlimpico AS T
+                 WHERE T.Identificador = NEW.TIMEOLIMP);
+  IF UPPER(TIME_GENERO) <> 'MISTO'
+  THEN
     ATLETA_GENERO = (SELECT Genero
                      FROM Atleta
                      WHERE ATLETA.Identificador = NEW.Atleta);
-    IF UPPER(TIME_GENERO) <> UPPER(ATLETA_GENERO) THEN
+    IF UPPER(TIME_GENERO) <> UPPER(ATLETA_GENERO)
+    THEN
       RAISE EXCEPTION 'O gênero do atleta é incompatível com o do time';
     END IF;
   END IF;

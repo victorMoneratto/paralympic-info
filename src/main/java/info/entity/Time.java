@@ -2,16 +2,14 @@ package info.entity;
 
 import io.datafx.crud.table.ViewColumn;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "TimeOlimpico")
 @Entity
 public class Time {
     @Id
     @ViewColumn("ID")
+    @GeneratedValue
     public Integer identificador;
 
     @ViewColumn("Nome")
