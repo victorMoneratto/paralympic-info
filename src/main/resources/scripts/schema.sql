@@ -205,14 +205,30 @@ CREATE OR REPLACE VIEW Atleta_Time_Info AS
     JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
     JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador;
 
--- CREATE OR REPLACE VIEW Participante_Partida AS
---   SELECT
---   FROM Atleta_Partida
---
---   UNION
---
---   SELECT *
---   FROM Time_Partida;
+CREATE OR REPLACE VIEW Participante_Partida AS
+  SELECT
+    uuid_generate_v4() AS uuid,
+    Atleta,
+    NULL AS Time,
+    Nome,
+    Delegacao,
+    Partida,
+    Classificacao,
+    Pontuacao
+  FROM Atleta_Partida JOIN Atleta
+    ON Atleta_Partida.Atleta = Atleta.Identificador
+  UNION
+  SELECT
+    uuid_generate_v4() AS uuid,
+    NULL      AS Atleta,
+    TimeOlimp AS Time,
+    Nome,
+    Delegacao,
+    Partida,
+    Classificacao,
+    Pontuacao
+  FROM Time_Partida JOIN TimeOlimpico
+  ON Time_Partida.TimeOlimp = TimeOlimpico.Identificador;
 
 
 ---------------------------- TRIGGERS ----------------------------
