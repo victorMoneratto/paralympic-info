@@ -66,9 +66,8 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
 
     @Override
     public void modelToForm() {
-        final String doubleFormat = "%.2f";
-        String alturaText = String.format(doubleFormat, model.getAltura());
-        String pesoText = String.format(doubleFormat, model.getPeso());
+        String alturaText = model.getAltura().toString();
+        String pesoText = model.getPeso().toString();
         LocalDate dataNascimentoValue = model.getDataNascimento().toLocalDate();
 
         nome.setText(model.getNome());

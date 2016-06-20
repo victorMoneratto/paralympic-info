@@ -1,9 +1,12 @@
 package info.view.details;
 
 import info.entity.*;
+import info.view.PartidaInfo;
 import io.datafx.controller.FXMLController;
+import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.action.ActionMethod;
 import io.datafx.controller.flow.action.ActionTrigger;
+import io.datafx.controller.util.VetoException;
 import io.datafx.crud.table.TableColumnFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 @FXMLController(value = "partida-details.fxml", title = "Partida")
 public class PartidaDetails extends AbstractDetails<Partida> {
@@ -47,8 +49,7 @@ public class PartidaDetails extends AbstractDetails<Partida> {
     @FXML
     public TableView participantes;
 
-    private ArrayList<Atleta_Partida> atletas;
-    private ArrayList<Atleta_Partida> times;
+    private PartidaInfo info;
 
     @Override
     public void onInit() {
@@ -58,20 +59,19 @@ public class PartidaDetails extends AbstractDetails<Partida> {
         modalidade.getItems().setAll(data.select(Modalidade.class, "UPPER(tipo) = \'INDIVIDUAL\'"));
         local.getItems().addAll(data.select(Local.class));
 
-        atletas = new ArrayList<>();
-        times = new ArrayList<>();
+        info = new PartidaInfo(insertingNew);
 
         tipo.valueProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue == null || newValue.equals("INDIVIDUAL")) {
                 participantes.getColumns().setAll(TableColumnFactory.createColumns(Atleta_Partida.class));
                 participantes.getItems().setAll(data.select(Atleta_Partida.class, "partida = " + model.getIdentificador()));
                 modalidade.getItems().setAll(data.select(Modalidade.class, "UPPER(tipo) = \'INDIVIDUAL\'"));
-                times.clear();
+                info.times.clear();
             } else if(newValue.equals("TIME")) {
                 participantes.getColumns().setAll(TableColumnFactory.createColumns(Time_Partida.class));
                 participantes.getItems().setAll(data.select(Time_Partida.class, "partida = " + model.getIdentificador()));
                 modalidade.getItems().setAll(data.select(Modalidade.class, "UPPER(tipo) = \'TIME\'"));
-                atletas.clear();
+                info.atletas.clear();
             }
         });
         super.onInit();
@@ -86,8 +86,23 @@ public class PartidaDetails extends AbstractDetails<Partida> {
     }
 
     @ActionMethod("add")
-    public void add() {
+    public void add() throws VetoException, FlowException {
         // TODO Add player (team or athlete) view
+        context.register(info, PartidaInfo.class);
+        if(tipo.getValue().equals("INDIVIDUAL")) {
+            info.type = PartidaInfo.ParticipanteType.Atleta;
+            actionHandler.navigate(ParticipantePartidaDetails.class);
+        }
+        else if(tipo.getValue().equals("TIME")) {
+            info.type = PartidaInfo.ParticipanteType.Time;
+            actionHandler.navigate(ParticipantePartidaDetails.class);
+        }
+    }
+
+    @Override
+    public void exit() throws VetoException, FlowException {
+        context.register((PartidaInfo)null, PartidaInfo.class);
+        super.exit();
     }
 
     @Override
