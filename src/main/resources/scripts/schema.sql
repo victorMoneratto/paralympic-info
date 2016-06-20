@@ -169,8 +169,8 @@ CREATE TABLE Atleta_Modalidade (
 );
 
 ---------------------------- VIEWS -------------------------------
-DROP EXTENSION IF EXISTS "uuid-ossp";
-CREATE EXTENSION "uuid-ossp";
+DROP EXTENSION IF EXISTS uuid-ossp;
+CREATE EXTENSION uuid-ossp;
 CREATE OR REPLACE VIEW Medalha AS
   SELECT
     uuid_generate_v4() AS uuid,
@@ -234,6 +234,80 @@ CREATE OR REPLACE VIEW Participante_Partida AS
 
 ---------------------------- TRIGGERS ----------------------------
 -- *********************************************************
+-- Trigger para inserção na view Participante_Atleta
+-- *********************************************************
+CREATE OR REPLACE FUNCTION participante_partida_new()
+  RETURNS TRIGGER AS $participante_partida_new$
+BEGIN
+  IF (TG_OP = 'INSERT')
+  THEN
+    IF (NEW.Atleta IS NOT NULL AND NEW.Time IS NULL)
+    THEN
+
+      INSERT INTO Atleta_Partida (Partida, Atleta, Classificacao, Pontuacao)
+      VALUES (NEW.Partida, NEW.Atleta, NEW.Classificacao, NEW.Pontuacao);
+
+      RETURN NEW;
+    ELSIF (NEW.Time IS NOT NULL AND NEW.Atleta IS NULL)
+      THEN
+
+        INSERT INTO Time_Partida (Partida, TimeOlimp, Classificacao, Pontuacao)
+        VALUES (NEW.Partida, NEW.Time, NEW.Classificacao, NEW.Pontuacao);
+
+        RETURN NEW;
+    END IF;
+  ELSIF (TG_OP = 'UPDATE')
+    THEN
+      IF (OLD.Atleta IS NOT NULL AND OLD.Time IS NULL)
+      THEN
+        UPDATE Atleta_Partida
+        SET Partida = NEW.Partida, Atleta = NEW.Atleta, Classificacao = NEW.Classificacao, Pontuacao = NEW.Pontuacao
+        WHERE Partida = OLD.Partida AND Atleta = OLD.Atleta;
+
+        RETURN OLD;
+      ELSIF (OLD.Time IS NOT NULL AND OLD.Atleta IS NULL)
+        THEN
+
+          UPDATE Time_Partida
+          SET Partida = NEW.Partida, TimeOlimp = NEW.Time, Classificacao = NEW.Classificacao,
+            Pontuacao = NEW.Pontuacao
+          WHERE Partida = OLD.Partida AND TimeOlimp = OLD.Time;
+
+          RETURN OLD;
+      END IF;
+  ELSIF (TG_OP = 'DELETE')
+    THEN
+
+      IF (old.Atleta IS NOT NULL AND old.Time IS NULL)
+      THEN
+
+        DELETE FROM Atleta_Partida
+        WHERE Atleta = OLD.Atleta AND Partida = OLD.Partida;
+        IF NOT FOUND
+        THEN RETURN NULL; END IF;
+
+        RETURN OLD;
+      ELSIF (old.Time IS NOT NULL AND old.Atleta IS NULL)
+        THEN
+
+          DELETE FROM Time_Partida
+          WHERE TimeOlimp = OLD.Time AND Partida = OLD.Partida;
+          IF NOT FOUND
+          THEN RETURN NULL; END IF;
+
+          RETURN OLD;
+      END IF;
+  END IF;
+  RETURN NULL;
+END;
+$participante_partida_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS participante_partida_new ON Participante_Partida;
+CREATE TRIGGER participante_partida_new
+INSTEAD OF INSERT OR UPDATE OR DELETE ON Participante_Partida
+FOR EACH ROW EXECUTE PROCEDURE participante_partida_new();
+
+-- *********************************************************
 -- Trigger para inserção na view Medalha
 -- *********************************************************
 CREATE OR REPLACE FUNCTION medalha_new()
@@ -264,6 +338,8 @@ BEGIN
 
       RETURN NEW;
   END IF;
+
+  RETURN NULL;
 END;
 $medalha_new$ LANGUAGE plpgsql;
 
