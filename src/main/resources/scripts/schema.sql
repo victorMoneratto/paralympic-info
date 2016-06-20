@@ -209,28 +209,69 @@ CREATE OR REPLACE VIEW Participante_Partida AS
   SELECT
     uuid_generate_v4() AS uuid,
     Atleta,
-    NULL AS Time,
+    NULL               AS Time,
     Nome,
     Delegacao,
     Partida,
     Classificacao,
     Pontuacao
-  FROM Atleta_Partida JOIN Atleta
-    ON Atleta_Partida.Atleta = Atleta.Identificador
+  FROM Atleta_Partida
+    JOIN Atleta
+      ON Atleta_Partida.Atleta = Atleta.Identificador
   UNION
   SELECT
     uuid_generate_v4() AS uuid,
-    NULL      AS Atleta,
-    TimeOlimp AS Time,
+    NULL               AS Atleta,
+    TimeOlimp          AS Time,
     Nome,
     Delegacao,
     Partida,
     Classificacao,
     Pontuacao
-  FROM Time_Partida JOIN TimeOlimpico
-  ON Time_Partida.TimeOlimp = TimeOlimpico.Identificador;
+  FROM Time_Partida
+    JOIN TimeOlimpico
+      ON Time_Partida.TimeOlimp = TimeOlimpico.Identificador;
 
 ---------------------------- TRIGGERS ----------------------------
+-- *********************************************************
+-- Trigger para inserção na view Medalha
+-- *********************************************************
+CREATE OR REPLACE FUNCTION medalha_new()
+  RETURNS TRIGGER AS $medalha_new$
+BEGIN
+  IF (NEW.Atleta IS NOT NULL AND NEW.Time IS NULL)
+  THEN
+
+    UPDATE Atleta_Modalidade
+    SET MedalhaGanha = NEW.Medalha
+    WHERE Atleta = NEW.Atleta AND Modalidade = NEW.Modalidade;
+
+    IF NOT FOUND
+    THEN RAISE EXCEPTION 'Atleta não participa da modalidade';
+    END IF;
+
+    RETURN NEW;
+  ELSIF (NEW.Time IS NOT NULL AND NEW.Atleta IS NULL)
+    THEN
+
+      UPDATE TimeOlimpico
+      SET MedalhaGanha = NEW.Medalha
+      WHERE Identificador = NEW.TIME AND Modalidade = NEW.Modalidade;
+
+      IF NOT FOUND
+      THEN RAISE EXCEPTION 'Time não participa da modalidade';
+      END IF;
+
+      RETURN NEW;
+  END IF;
+END;
+$medalha_new$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS medalha_new ON Medalha;
+CREATE TRIGGER medalha_new
+INSTEAD OF INSERT ON Medalha
+FOR EACH ROW EXECUTE PROCEDURE medalha_new();
+
 -- *********************************************************
 -- Atleta participa de uma modalidade de genero compativel
 -- *********************************************************
