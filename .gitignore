@@ -1,3 +1,4 @@
+out/
 persistence.xml
 target/
 *.iml
