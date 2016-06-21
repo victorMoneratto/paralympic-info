@@ -23,19 +23,24 @@ public class Medalha {
     @ViewColumn("Medalha")
     public String medalha;
 
-    @Id
     @ViewColumn("Modalidade")
     public String modalidade;
 
-    @Id
     @ViewColumn("Ganhador")
     public String nome;
+
+    @ViewColumn("Tipo de Modalidade")
+    public String tipo;
 
     public Medalha() {
     }
 
     public String getUuid() {
         return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public Integer getTime() {
@@ -58,11 +63,17 @@ public class Medalha {
         return nome;
     }
 
-    public void setNome(String nome) { this.nome = nome; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public String getMedalha() { return medalha; }
+    public String getMedalha() {
+        return medalha;
+    }
 
-    public void setMedalha(String medalha) { this.medalha = medalha; }
+    public void setMedalha(String medalha) {
+        this.medalha = medalha;
+    }
 
     public String getModalidade() {
         return modalidade;
@@ -70,5 +81,17 @@ public class Medalha {
 
     public void setModalidade(String modalidade) {
         this.modalidade = modalidade;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public boolean isIndividual() {
+        return tipo.equalsIgnoreCase("Individual");
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

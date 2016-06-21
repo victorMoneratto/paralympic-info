@@ -171,11 +171,13 @@ CREATE TABLE Atleta_Modalidade (
 ---------------------------- VIEWS -------------------------------
 DROP EXTENSION IF EXISTS uuid-ossp;
 CREATE EXTENSION uuid-ossp;
+DROP VIEW Medalha;
 CREATE OR REPLACE VIEW Medalha AS
   SELECT
     uuid_generate_v4() AS uuid,
     NULL               AS Time,
     Atleta,
+    'INDIVIDUAL'       AS Tipo,
     Nome,
     Modalidade,
     MedalhaGanha       AS Medalha
@@ -189,12 +191,14 @@ CREATE OR REPLACE VIEW Medalha AS
     uuid_generate_v4() AS uuid,
     Identificador      AS Time,
     NULL               AS Atleta,
+    'TIME'             AS Tipo,
     Nome,
     Modalidade,
     MedalhaGanha       AS Medalha
   FROM TimeOlimpico
   WHERE MedalhaGanha IS NOT NULL;
 
+DROP VIEW Atleta_Time_Info;
 CREATE OR REPLACE VIEW Atleta_Time_Info AS
   SELECT
     Atleta_Time.*,
@@ -205,11 +209,13 @@ CREATE OR REPLACE VIEW Atleta_Time_Info AS
     JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
     JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador;
 
+DROP VIEW Participante_Partida;
 CREATE OR REPLACE VIEW Participante_Partida AS
   SELECT
     uuid_generate_v4() AS uuid,
     Atleta,
     NULL               AS Time,
+    'INDIVIDUAL'       AS Tipo,
     Nome,
     Delegacao,
     Partida,
@@ -223,6 +229,7 @@ CREATE OR REPLACE VIEW Participante_Partida AS
     uuid_generate_v4() AS uuid,
     NULL               AS Atleta,
     TimeOlimp          AS Time,
+    'Time'             AS Tipo,
     Nome,
     Delegacao,
     Partida,
@@ -313,30 +320,50 @@ FOR EACH ROW EXECUTE PROCEDURE participante_partida_new();
 CREATE OR REPLACE FUNCTION medalha_new()
   RETURNS TRIGGER AS $medalha_new$
 BEGIN
-  IF (NEW.Atleta IS NOT NULL AND NEW.Time IS NULL)
+  IF (TG_OP = 'INSERT')
   THEN
-
-    UPDATE Atleta_Modalidade
-    SET MedalhaGanha = NEW.Medalha
-    WHERE Atleta = NEW.Atleta AND Modalidade = NEW.Modalidade;
-
-    IF NOT FOUND
-    THEN RAISE EXCEPTION 'Atleta não participa da modalidade';
-    END IF;
-
-    RETURN NEW;
-  ELSIF (NEW.Time IS NOT NULL AND NEW.Atleta IS NULL)
+    IF (NEW.Atleta IS NOT NULL AND NEW.Time IS NULL)
     THEN
 
-      UPDATE TimeOlimpico
+      UPDATE Atleta_Modalidade
       SET MedalhaGanha = NEW.Medalha
-      WHERE Identificador = NEW.TIME AND Modalidade = NEW.Modalidade;
+      WHERE Atleta = NEW.Atleta AND Modalidade = NEW.Modalidade;
 
       IF NOT FOUND
-      THEN RAISE EXCEPTION 'Time não participa da modalidade';
+      THEN RAISE EXCEPTION 'Atleta não participa da modalidade';
       END IF;
 
       RETURN NEW;
+    ELSIF (NEW.Time IS NOT NULL AND NEW.Atleta IS NULL)
+      THEN
+
+        UPDATE TimeOlimpico
+        SET MedalhaGanha = NEW.Medalha
+        WHERE Identificador = NEW.TIME AND Modalidade = NEW.Modalidade;
+
+        IF NOT FOUND
+        THEN RAISE EXCEPTION 'Time não participa da modalidade';
+        END IF;
+
+        RETURN NEW;
+    END IF;
+  ELSIF (TG_OP = 'DELETE')
+    THEN
+      IF (OLD.Atleta IS NOT NULL AND OLD.Time IS NULL)
+      THEN
+        UPDATE Atleta_Modalidade
+        SET MedalhaGanha = NULL
+        WHERE Atleta = OLD.Atleta AND Modalidade = OLD.Modalidade;
+
+        RETURN OLD;
+      ELSIF (OLD.Time IS NOT NULL AND OLD.Atleta IS NULL)
+        THEN
+          UPDATE TimeOlimpico
+          SET MedalhaGanha = NULL
+          WHERE Identificador = OLD.Time AND Modalidade = OLD.Modalidade;
+
+          RETURN OLD;
+      END IF;
   END IF;
 
   RETURN NULL;
@@ -345,7 +372,7 @@ $medalha_new$ LANGUAGE plpgsql;
 
 DROP TRIGGER IF EXISTS medalha_new ON Medalha;
 CREATE TRIGGER medalha_new
-INSTEAD OF INSERT ON Medalha
+INSTEAD OF INSERT OR DELETE ON Medalha
 FOR EACH ROW EXECUTE PROCEDURE medalha_new();
 
 -- *********************************************************
