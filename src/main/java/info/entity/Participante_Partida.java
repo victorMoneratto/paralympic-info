@@ -97,4 +97,25 @@ public class Participante_Partida {
     public void setPontuacao(Double pontuacao) {
         this.pontuacao = pontuacao;
     }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean same = false;
+
+        if (obj != null && obj instanceof Participante_Partida)
+        {
+            Participante_Partida other = (Participante_Partida)obj;
+            if(this.getAtleta() == null && other.getAtleta() == null)
+                same = this.getTime().equals(other.getTime());
+            if(this.getTime() == null && other.getTime() == null)
+                same = this.getAtleta().equals(other.getAtleta());
+        }
+
+        return same;
+    }
 }

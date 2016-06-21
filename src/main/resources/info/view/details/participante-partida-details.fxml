@@ -41,10 +41,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TextField fx:id="pontuacao" editable="false" focusTraversable="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <TextField fx:id="pontuacao" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                 <Label alignment="CENTER_RIGHT" text="Pontuação:" textAlignment="RIGHT" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                <TextField fx:id="classificacao" layoutX="120.0" layoutY="27.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label alignment="CENTER_RIGHT" layoutX="67.0" layoutY="32.0" text="Classificação:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                <TextField fx:id="classificacao" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label alignment="CENTER_RIGHT" text="Classificação:" textAlignment="RIGHT" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label text="Participante:" />
             <ComboBox fx:id="participante" prefHeight="25.0" prefWidth="523.0" GridPane.columnIndex="1" GridPane.columnSpan="3" />
             </children>

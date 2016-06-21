@@ -26,9 +26,6 @@ public class Partida {
     @ViewColumn("Observação")
     public String observacao;
 
-    @ViewColumn("Tipo")
-    public String tipo;
-
     @ViewColumn("Modalidade")
     public String modalidade;
 
@@ -70,14 +67,6 @@ public class Partida {
 
     public void setObservacao(String Observacao) {
         this.observacao = Observacao;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
 
     public String getModalidade() {
