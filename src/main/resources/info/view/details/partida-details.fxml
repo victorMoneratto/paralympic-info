@@ -38,7 +38,17 @@
                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                  </VBox.margin>
              </Button>
-            <Button fx:id="add" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Adcionar Participante" textAlignment="CENTER">
+            <Button fx:id="addParticipante" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Adcionar Participante" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="editParticipante" mnemonicParsing="false" prefHeight="25.0" prefWidth="165.0" text="Editar Participante" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="removeParticipante" mnemonicParsing="false" prefHeight="25.0" prefWidth="276.0" text="Remover Participante" textAlignment="CENTER">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
@@ -62,8 +72,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints />
@@ -73,17 +83,15 @@
          <children>
             <Label text="Data:" />
             <Label text="Local:" GridPane.rowIndex="2" />
-            <Label text="Modalidade:" GridPane.rowIndex="4" />
+            <Label text="Modalidade:" GridPane.rowIndex="3" />
             <Label text="Hora:" GridPane.columnIndex="2" />
-            <Label text="Tipo:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label text="Observação:" GridPane.rowIndex="3" />
+            <Label text="Observação:" GridPane.rowIndex="4" />
             <DatePicker fx:id="datePicker" GridPane.columnIndex="1" />
             <TextField fx:id="timeField" GridPane.columnIndex="3" />
-            <ComboBox fx:id="modalidade" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
-            <TextField fx:id="observacao" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-            <ComboBox fx:id="tipo" prefHeight="25.0" prefWidth="193.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <ComboBox fx:id="modalidade" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+            <TextField fx:id="observacao" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4" />
             <ComboBox fx:id="local" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" />
-            <CheckBox fx:id="completada" mnemonicParsing="false" text="Completada" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <CheckBox fx:id="completada" mnemonicParsing="false" text="Completada" GridPane.columnIndex="3" GridPane.rowIndex="1" />
             <TableView fx:id="participantes" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="5" GridPane.rowSpan="5">
               <columns>
                 <TableColumn text="Participantes" />

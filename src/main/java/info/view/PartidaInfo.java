@@ -1,27 +1,27 @@
 package info.view;
 
-import info.entity.Atleta_Partida;
-import info.entity.Time_Partida;
+import info.entity.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- * Created by Seduq on 20/06/2016.
- */
 public class PartidaInfo {
-    public boolean isNew;
+    public Integer partida;
+    public Modalidade modalidade;
+    public LocalDate data;
+    public String hora;
+    public Local local;
+    public boolean completada;
+
     public enum ParticipanteType
     {
         Atleta,
         Time
     }
     public ParticipanteType type;
-    public ArrayList<Atleta_Partida> atletas;
-    public ArrayList<Time_Partida> times;
+    public ArrayList<Participante_Partida> participantes;
 
-    public PartidaInfo(boolean isNew) {
-        this.isNew = false;
-        atletas = new ArrayList<>();
-        times = new ArrayList<>();
+    public PartidaInfo() {
+        participantes = new ArrayList<>();
     }
 }
