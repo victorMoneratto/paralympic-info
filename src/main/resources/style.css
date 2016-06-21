@@ -1,0 +1,9 @@
+.text-field:disabled, .combo-box:disabled, .text-field:readonly {
+    -fx-opacity: 1.0;
+    -fx-background-color: #CCC;
+    -fx-text-fill: black;
+}
+
+.table-view {
+    -fx-opacity: 1.0;
+}

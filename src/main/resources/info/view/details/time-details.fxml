@@ -76,6 +76,6 @@
         </GridPane>
     </center>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@/style.css" />
     </stylesheets>
 </BorderPane>

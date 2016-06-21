@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractCatalog<T> {
 
@@ -106,6 +107,10 @@ public abstract class AbstractCatalog<T> {
                 data.getTransaction().begin();
                 Query query = data.makeDelete(selected, getModelClass());
                 removed = query.executeUpdate();
+            } catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, ex.getLocalizedMessage(), ButtonType.OK);
+                alert.setResizable(true);
+                alert.showAndWait();
             } finally {
                 if (removed == 1) {
                     data.getTransaction().commit();

@@ -47,7 +47,7 @@
       </VBox>
    </right>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@../../../style.css" />
     </stylesheets>
    <center>
       <GridPane fx:id="form" BorderPane.alignment="CENTER">
@@ -93,6 +93,6 @@
       </GridPane>
    </center>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@/style.css" />
     </stylesheets>
 </BorderPane>

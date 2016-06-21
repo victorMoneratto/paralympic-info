@@ -93,7 +93,7 @@ CREATE TABLE Atleta (
   Altura         FLOAT,
   Peso           FLOAT,
   Genero         VARCHAR(9),
-  Foto           VARCHAR(60),
+  Foto           VARCHAR(255),
 
   CONSTRAINT PK_Atleta PRIMARY KEY (Identificador),
   CONSTRAINT FK_Atleta FOREIGN KEY (Delegacao) REFERENCES Delegacao (Nome) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -111,7 +111,7 @@ CREATE TABLE Atleta_Partida (
   CONSTRAINT PK_AtlPart PRIMARY KEY (Partida, Atleta),
   CONSTRAINT FK_AtlPart1 FOREIGN KEY (Partida) REFERENCES Partida (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT FK_AtlPart2 FOREIGN KEY (Atleta) REFERENCES Atleta (Identificador) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT UN_TimePart UNIQUE (PARTIDA, CLASSIFICACAO)
+  CONSTRAINT UN_AtlPart UNIQUE (PARTIDA, CLASSIFICACAO)
 );
 
 CREATE TABLE TimeOlimpico (
@@ -169,9 +169,9 @@ CREATE TABLE Atleta_Modalidade (
 );
 
 ---------------------------- VIEWS -------------------------------
-DROP EXTENSION IF EXISTS uuid-ossp;
-CREATE EXTENSION uuid-ossp;
-DROP VIEW Medalha;
+DROP EXTENSION IF EXISTS "uuid-ossp";
+CREATE EXTENSION "uuid-ossp";
+DROP VIEW IF EXISTS Medalha;
 CREATE OR REPLACE VIEW Medalha AS
   SELECT
     uuid_generate_v4() AS uuid,
@@ -198,7 +198,7 @@ CREATE OR REPLACE VIEW Medalha AS
   FROM TimeOlimpico
   WHERE MedalhaGanha IS NOT NULL;
 
-DROP VIEW Atleta_Time_Info;
+DROP VIEW IF EXISTS Atleta_Time_Info;
 CREATE OR REPLACE VIEW Atleta_Time_Info AS
   SELECT
     Atleta_Time.*,
@@ -209,7 +209,7 @@ CREATE OR REPLACE VIEW Atleta_Time_Info AS
     JOIN Atleta ON Atleta_Time.Atleta = Atleta.Identificador
     JOIN TimeOlimpico ON Atleta_Time.TimeOlimp = TimeOlimpico.Identificador;
 
-DROP VIEW Participante_Partida;
+DROP VIEW IF EXISTS Participante_Partida;
 CREATE OR REPLACE VIEW Participante_Partida AS
   SELECT
     uuid_generate_v4() AS uuid,

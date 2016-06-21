@@ -77,7 +77,13 @@ public class AtletaDetails extends AbstractDetails<Atleta> {
         dataNascimento.setValue(dataNascimentoValue);
         selectInCombo(delegacao, d -> d.getNome().equals(model.getDelegacao()));
         foto.setText(model.getFoto());
-        image.setImage(new Image(foto.getText()));
+        Image im = null;
+        try {
+            im = new Image(foto.getText());
+            image.setImage(im);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override

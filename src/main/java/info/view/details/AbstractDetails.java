@@ -19,7 +19,7 @@ import javafx.scene.layout.Pane;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -97,20 +97,26 @@ public abstract class AbstractDetails<T> extends SimpleView {
     @ActionMethod("save")
     public void save() throws VetoException, FlowException {
         formToModel();
-        if (insertingNew) {
-            Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Tem certeza que deseja inserir os dados?").showAndWait();
-            if (response.isPresent() && response.get() == ButtonType.OK) {
-                onInsert();
-                exit();
+        try {
+            if (insertingNew) {
+                Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Tem certeza que deseja inserir os dados?").showAndWait();
+                if (response.isPresent() && response.get() == ButtonType.OK) {
+                    onInsert();
+                    exit();
+                }
+            } else {
+                Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
+                        "Tem certeza que deseja atualizar os dados?").showAndWait();
+                if (response.isPresent() && response.get() == ButtonType.OK) {
+                    onUpdate();
+                    exit();
+                }
             }
-        } else {
-            Optional<ButtonType> response = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Tem certeza que deseja atualizar os dados?").showAndWait();
-            if (response.isPresent() && response.get() == ButtonType.OK) {
-                onUpdate();
-                exit();
-            }
+        } catch(IllegalStateException|PersistenceException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getLocalizedMessage(), ButtonType.OK);
+            alert.setResizable(true);
+            alert.showAndWait();
         }
     }
 
