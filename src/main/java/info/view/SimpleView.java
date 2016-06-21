@@ -2,6 +2,7 @@ package info.view;
 
 import io.datafx.core.concurrent.ProcessChain;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 

@@ -7,3 +7,8 @@
 .table-view {
     -fx-opacity: 1.0;
 }
+
+.error {
+    -fx-border-width: 5px;
+    -fx-border-color: red;
+}

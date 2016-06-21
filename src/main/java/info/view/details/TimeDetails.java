@@ -45,7 +45,7 @@ public class TimeDetails extends AbstractDetails<Time> {
     public void onInit() {
         delegacao.getItems().setAll(data.select(Delegacao.class));
         modalidade.getItems().setAll(data.select(Modalidade.class, "UPPER(tipo) = \'TIME\'"));
-        genero.getItems().setAll("MASCULINO", "FEMININO");
+        genero.getItems().setAll("MASCULINO", "FEMININO", "MISTO");
         medalha.getItems().setAll("OURO", "PRATA", "BRONZE");
         atletas.getColumns().setAll(TableColumnFactory.createColumns(Atleta_Time_Info.class));
         atletas.getItems().setAll(data.select(Atleta_Time_Info.class, "timeolimp = " + model.getIdentificador()));

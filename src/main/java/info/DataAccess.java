@@ -283,7 +283,7 @@ public class DataAccess {
         }
     }
 
-    private String fieldNameFor(Field field) {
+    public String fieldNameFor(Field field) {
         Column column = field.getAnnotation(Column.class);
         return column != null && !column.name().isEmpty() ?
                 column.name() : field.getName();

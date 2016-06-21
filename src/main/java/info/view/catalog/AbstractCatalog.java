@@ -12,6 +12,7 @@ import io.datafx.controller.flow.context.ViewFlowContext;
 import io.datafx.controller.util.VetoException;
 import io.datafx.core.concurrent.ProcessChain;
 import io.datafx.crud.table.TableColumnFactory;
+import io.datafx.crud.table.ViewColumn;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -19,9 +20,10 @@ import javafx.scene.layout.Pane;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.Query;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 public abstract class AbstractCatalog<T> {
 
@@ -50,16 +52,21 @@ public abstract class AbstractCatalog<T> {
     @BackAction
     Button back;
 
+    @FXML
+    TextField search;
+
     @FXMLViewFlowContext
     ViewFlowContext context;
 
     @ActionHandler
     protected FlowActionHandler actionHandler;
 
+    protected String where = "";
+
     @PostConstruct
     public void init() {
 
-        // Generate columns from Model @ViewColumn annotations
+        // Generate coldumns from Model @ViewColumn annotations
         List<TableColumn<T, ?>> cols = TableColumnFactory.createColumns(getModelClass());
         table.getColumns().setAll(filterColumns(cols));
 
@@ -90,7 +97,7 @@ public abstract class AbstractCatalog<T> {
     }
 
     protected List<T> supplyData() {
-        return data.select(getModelClass());
+        return data.select(getModelClass(), where);
     }
 
     protected void postLoad() {
@@ -135,5 +142,34 @@ public abstract class AbstractCatalog<T> {
             context.register(selected, getModelClass());
             actionHandler.navigate(getDetailsClass());
         }
+    }
+
+    @FXML
+    public void onSearch() {
+        String[] split = search.getText().split(":", 2);
+        if (split.length == 2) {
+            String name = split[0].trim();
+            String value = split[1].trim();
+            Optional<Field> field = Arrays.stream(getModelClass().getDeclaredFields())
+                    .filter(f -> {
+                        ViewColumn viewCol = f.getAnnotation(ViewColumn.class);
+                        return viewCol != null && viewCol.value().equalsIgnoreCase(name);
+                    })
+                    .findFirst();
+
+            if (field.isPresent()) {
+                if (field.get().getType() == String.class) {
+                    where = "UPPER(" + data.fieldNameFor(field.get()) + ") LIKE \'%" + value.toUpperCase() + "%\'";
+                } else {
+                    where = data.fieldNameFor(field.get()) + " = " + value;
+                }
+
+                refresh();
+                return;
+            }
+        }
+        search.setText("");
+        where = "";
+        refresh();
     }
 }
